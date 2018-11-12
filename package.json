@@ -5,6 +5,7 @@
   "dependencies": {
     "d3": "^5.7.0",
     "d3-geo-projection": "^2.4.1",
+    "kefir": "^3.8.5",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-scripts": "2.1.1",
