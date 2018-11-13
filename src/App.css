@@ -30,3 +30,35 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  margin: 0;
+  background-color: #76CFF0;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-weight: 200;
+  font-size: 17px;
+}
+#map-holder {
+  width: 100vw;
+  height: 100vh;
+}
+svg rect {
+  fill: pink;   /* map background colour */
+}
+.country{
+  fill: orange;   /* country colour */
+  stroke: green; /* country border colour */
+  stroke-width: 1; /* country border width */
+}
+.country-on{
+  fill: blue;   /* highlight colour for selected country */
+}
+.countryLabel{
+  display: none;   /* hide all country labels by default */
+}
+.countryName{
+  fill: red;   /* country label text colour */
+}
+.countryLabelBg{
+  fill: yellow;   /* country label background colour */
+}
