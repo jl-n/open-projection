@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Country from './Country'
+import Label from './Label'
 import MAPDATA_LOW from '../map-data/110m';
 import MAPDATA_HIGH from '../map-data/50m';
 import * as d3 from 'd3';
@@ -15,8 +16,6 @@ class MapRenderer extends Component {
       isDragging: false
     }
 
-    console.log(d3);
-
     // Define map projection
     let w = 1000
     let h = 1000
@@ -25,15 +24,29 @@ class MapRenderer extends Component {
        // .rotate([-120, -14, 0]) //long, lat, 0
        .parallel(45)
        .center([0, 0]) // set centre to further North
-       .scale([w/(1*Math.PI)]) // scale to fit group width
+       // .scale([w/(2*Math.PI)]) // scale to fit group width
+       .scale([w/(1.2*Math.PI)]) // scale to fit group width
        .translate([w/2,h/2]) // ensure centred in group
+
+    const getCountryCentroids = (data) => {
+     return data.features.map(feature => {
+       return {
+         coordinates: d3.geoPath().centroid(feature), //Need to get the projection from
+         properties: feature.properties
+       }
+     })
+    }
+
+    this.centroids = getCountryCentroids(MAPDATA_LOW)
   }
 
   componentDidMount() {
     const mousedownStream = _.fromEvents(document.body, 'mousedown');
     const mouseupStream = _.fromEvents(document.body, 'mouseup');
     const mousemoveStream = _.fromEvents(document.body, 'mousemove');
-    const filterStream = mousedownStream.map(v => true).merge(mouseupStream.map(v => false))
+    const filterStream = mousedownStream
+                                .map(v => true)
+                                .merge(mouseupStream.map(v => false))
 
     mousedownStream.onValue(v => this.setState(Object.assign(this.state, {isDragging: true})))
     mouseupStream.onValue(v => this.setState(Object.assign(this.state, {isDragging: false})))
@@ -60,10 +73,8 @@ class MapRenderer extends Component {
   }
 
   render() {
-    // console.log(d3projections);
+    const mapData = this.state.isDragging ? MAPDATA_LOW : MAPDATA_HIGH
     this.projection.rotate([-this.state.x, -this.state.y/2, 0])
-
-    // Define map path
 
     const generateStatePaths = (data) => {
       return data.features.map((feature, i) => {
@@ -71,13 +82,21 @@ class MapRenderer extends Component {
       })
     }
 
-    let statePaths = generateStatePaths(this.state.isDragging ? MAPDATA_LOW : MAPDATA_HIGH);
+    const statePaths = generateStatePaths(mapData);
+    const labels = this.centroids.map((c, i) => {
+      const projectedCoord = this.projection([c.coordinates[0], c.coordinates[1]])
+
+      return <Label x={projectedCoord[0]} y={projectedCoord[1]} value={c.properties.NAME} key={i}/>
+    })
 
     return (
       <div className="App">
-        <svg className="container" width="1000" height="1000">
+        <svg className="container noselect" width="1000" height="1000">
           <g className="line">
             {statePaths}
+          </g>
+          <g>
+            {labels}
           </g>
         </svg>
       </div>

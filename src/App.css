@@ -42,23 +42,13 @@ body {
   width: 100vw;
   height: 100vh;
 }
-svg rect {
-  fill: pink;   /* map background colour */
-}
-.country{
-  fill: orange;   /* country colour */
-  stroke: green; /* country border colour */
-  stroke-width: 1; /* country border width */
-}
-.country-on{
-  fill: blue;   /* highlight colour for selected country */
-}
-.countryLabel{
-  display: none;   /* hide all country labels by default */
-}
-.countryName{
-  fill: red;   /* country label text colour */
-}
-.countryLabelBg{
-  fill: yellow;   /* country label background colour */
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
