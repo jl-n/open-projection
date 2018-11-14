@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
 
 const Label = (props) => {
-  return <text stroke='white' strokeWidth='0.3' x={props.x} y={props.y} style={{font: 'bold 10px sans-serif', color: '#253044'}}>{props.value}</text>
+  const scaleFactor = props.size*0.001
+  const fontStyle = `bold ${6+scaleFactor}px sans-serif` //${props.size > 20 ? 'bold' : 'normal'}
+  const value = props.properties.NAME
+  const xOffset = (value.length/2)*2.3+scaleFactor
+
+  return (
+    <text
+      stroke='white'
+      strokeWidth={0.3}
+      x={props.x-xOffset}
+      y={props.y}
+      style={{font: fontStyle, color: '#253044'}}>
+
+      {value}
+    </text>
+  )
 }
 
 export default Label;
