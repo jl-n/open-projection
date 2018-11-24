@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
-import Country from './Country'
-import Label from './Label'
-import MAPDATA_LOW from '../map-data/110m';
-import MAPDATA_HIGH from '../map-data/50m';
 import * as d3 from 'd3';
 import * as d3projections from 'd3-geo-projection';
 import _ from 'kefir'
+
+import Country from './Country'
+import Label from './Label'
+import Graticule from './Graticule'
+import Bathymetry from './Bathymetry'
+
+import MAPDATA_LOW from '../map-data/110m';
+import MAPDATA_HIGH from '../map-data/50m';
+import GRATICULES from '../map-data/graticules_10';
+
+import BATHYMETRY_0 from '../map-data/bathymetry_J_1000';
+import BATHYMETRY_1 from '../map-data/bathymetry_H_3000';
+import BATHYMETRY_2 from '../map-data/bathymetry_G_4000';
+import BATHYMETRY_3 from '../map-data/bathymetry_F_5000';
 
 class MapRenderer extends Component {
   constructor() {
@@ -80,6 +90,8 @@ class MapRenderer extends Component {
     const mapData = this.state.isDragging ? MAPDATA_LOW : MAPDATA_HIGH
 
     const statePaths = this._getStatePaths(mapData);
+    const graticules = this.state.isDragging ? [] : this._getGraticules(GRATICULES)
+    const bathymetry = this.state.isDragging ? [] : this._getBathymetry([BATHYMETRY_0, BATHYMETRY_1, BATHYMETRY_2, BATHYMETRY_3])
     const labels = this.state.isDragging ? [] : this._getLabelData()
 
     return (
@@ -87,6 +99,12 @@ class MapRenderer extends Component {
         <svg className="container noselect" width={this.props.width} height={this.props.height}>
           <g className="line">
             {statePaths}
+          </g>
+          <g>
+            {bathymetry}
+          </g>
+          <g>
+            {graticules}
           </g>
           <g>
             {labels}
@@ -99,6 +117,26 @@ class MapRenderer extends Component {
   _getStatePaths(data) {
     return data.features.map((feature, i) => {
       return <Country projection={this.projection} feature={feature} key={i} />;
+    })
+  }
+
+  _getGraticules(data) {
+    return data.features.map((feature, i) => {
+      return <Graticule projection={this.projection} feature={feature} key={i} />;
+    })
+  }
+
+  _getBathymetry(data) {
+    function flatten(arr) {
+      return arr.reduce(function (flat, toFlatten) {
+        return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+      }, []);
+    }
+
+    return data.map((dataset, i) => {
+      return dataset.features.map((feature, j) => {
+        return <Bathymetry projection={this.projection} feature={feature} key={i+j} />;
+      })
     })
   }
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const Label = (props) => {
   const scaleFactor = props.size*0.001
-  const fontStyle = `bold ${6+scaleFactor}px sans-serif` //${props.size > 20 ? 'bold' : 'normal'}
+  const fontStyle = `bold ${5+scaleFactor}px sans-serif` //${props.size > 20 ? 'bold' : 'normal'}
   const value = props.properties.NAME
   const xOffset = (value.length/2)*2.3+scaleFactor
 

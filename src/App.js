@@ -6,7 +6,7 @@ import MapRenderer from './components/MapRenderer'
 class App extends Component {
   componentWillMount() {
     window.onresize = () => {
-      this.forceUpdate()
+      // this.forceUpdate()
     }
   }
 
