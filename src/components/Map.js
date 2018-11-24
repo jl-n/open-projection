@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import * as d3projections from 'd3-geo-projection';
-import _ from 'kefir'
 
 import Country from './Country'
 import Label from './Label'
@@ -42,17 +41,17 @@ class Map extends Component {
   render() {
     const w = this.props.width
     const h = this.props.height
-    const x = this.props.x
-    const y = this.props.y
+    const lon = this.props.lon
+    const lat = this.props.lat
 
     this.projection
        .scale([w/(2*Math.PI)*1.4]) // scale to fit group width
        .translate([w/2,h/2]) // ensure centred in group
-    this.projection.rotate([-x, -y/2, 0])
+    this.projection.rotate([-lon, -lat/2, 0])
 
     const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
     const statePaths = this._getStatePaths(mapData)
-    const graticules = tthis.props.renderLevel === 0 ? [] : this._getGraticules(GRATICULES)
+    const graticules = this.props.renderLevel === 0 ? [] : this._getGraticules(GRATICULES)
     const bathymetry = this.props.renderLevel === 0 ? [] : this._getBathymetry([BATHYMETRY_3])
     const labels = this.props.renderLevel === 0 ? [] : this._getLabelData()
 

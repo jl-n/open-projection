@@ -4,11 +4,6 @@ import './App.css';
 import MapRenderer from './components/MapRenderer'
 
 class App extends Component {
-  componentWillMount() {
-    window.onresize = () => {
-      // this.forceUpdate()
-    }
-  }
 
   render() {
     console.log(document.body.clientHeight);
@@ -18,7 +13,7 @@ class App extends Component {
           <input />
           <button onClick={this._animate}>Go</button>
         </div>
-        <MapRenderer animateX={20} animateY={40} width={document.body.clientWidth} height={document.body.clientHeight}/>
+        <MapRenderer />
       </div>
     );
   }
