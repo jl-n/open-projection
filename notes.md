@@ -3,12 +3,12 @@
 - Add colour schema
 - Add titles DONE
 - add geolocation
-- Add printmarks to exported svg
 - Make projection changeable
 - Sop things jumping around each drag - ~DONE
 - Make dragging around high quality DONE
-- Make text render centrally rather than from the left
-- Graticules: Original transform + Untransformed overlay
+- Make text render centrally rather than from the left DONE
+- Graticules DONE
+- Bathymetry DONE
 
 
 #Ideas
@@ -20,3 +20,6 @@
 - geolocation
 - Url encoded parameters
 - Two or three color themes?
+
+# Further notes:
+What makes the Mapbox (and other maps) look nice is the land has shaded contours of elevation, and the land has shaded areas of green to pale to indicate climate

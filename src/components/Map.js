@@ -17,17 +17,7 @@ import BATHYMETRY_1 from '../map-data/bathymetry_H_3000';
 import BATHYMETRY_2 from '../map-data/bathymetry_G_4000';
 import BATHYMETRY_3 from '../map-data/bathymetry_F_5000';
 
-class MapRenderer extends Component {
-  constructor() {
-    super()
-    this.state = {
-      x: 0,
-      y: 0,
-      isDragging: false,
-      isAnimating: false,
-      destination: [0, 0]
-    }
-  }
+class Map extends Component {
 
   componentWillMount() {
     const getLabelData = (data) => {
@@ -49,59 +39,22 @@ class MapRenderer extends Component {
        // .scale([w/(2*Math.PI)]) // scale to fit group width
   }
 
-  componentDidMount() {
-    const mousedownStream = _.fromEvents(document.body, 'mousedown');
-    const mouseupStream = _.fromEvents(document.body, 'mouseup');
-    const mousemoveStream = _.fromEvents(document.body, 'mousemove');
-    const filterStream = mousedownStream
-                                .map(v => true)
-                                .merge(mouseupStream.map(v => false))
-
-    mousedownStream.onValue(v => this.setState(Object.assign(this.state, {isDragging: true, isAnimating: false})))
-    mouseupStream.onValue(v => this.setState(Object.assign(this.state, {isDragging: false})))
-
-    mousemoveStream.filterBy(filterStream).slidingWindow(2, 2).onValue(a => {
-      const xDiff = a[0].pageX - a[1].pageX
-      const yDiff = a[0].pageY - a[1].pageY
-
-      /*
-      Small bug - because the beginning value of the .slidingWindow() function is the last mouse
-      position of the last drag, there is an initial jump. We need to ignore the first value in this case.
-      It is not clear how to do this right now, so a temporary fix is to ignore setting the state if
-      the diff is too big (so it jumps if the next drag starts close but not exactly where the last one ended).
-      */
-      if(xDiff > 30 || yDiff > 30) return
-
-      const x = this.state.x+xDiff
-      const y = this.state.y-yDiff
-
-      this.setState({
-        x: x,
-        y: y,
-        destination: [x, y],
-        isDragging: this.state.isDragging
-      })
-    })
-  }
-
   render() {
     const w = this.props.width
     const h = this.props.height
+    const x = this.props.x
+    const y = this.props.y
 
     this.projection
        .scale([w/(2*Math.PI)*1.4]) // scale to fit group width
        .translate([w/2,h/2]) // ensure centred in group
+    this.projection.rotate([-x, -y/2, 0])
 
-
-    // this.setState(Object.assign({}, {isAnimating: true, destination: [20, 60]}, this.state))
-
-    this.projection.rotate([-this.state.x, -this.state.y/2, 0])
-    const mapData = this.state.isDragging || this.state.isAnimating ? MAPDATA_LOW : MAPDATA_HIGH
-
-    const statePaths = this._getStatePaths(mapData);
-    const graticules = this.state.isDragging ? [] : this._getGraticules(GRATICULES)
-    const bathymetry = this.state.isDragging ? [] : this._getBathymetry([BATHYMETRY_3])
-    const labels = this.state.isDragging ? [] : this._getLabelData()
+    const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
+    const statePaths = this._getStatePaths(mapData)
+    const graticules = tthis.props.renderLevel === 0 ? [] : this._getGraticules(GRATICULES)
+    const bathymetry = this.props.renderLevel === 0 ? [] : this._getBathymetry([BATHYMETRY_3])
+    const labels = this.props.renderLevel === 0 ? [] : this._getLabelData()
 
     return (
       <div className="App">
@@ -158,4 +111,4 @@ class MapRenderer extends Component {
   }
 }
 
-export default MapRenderer;
+export default Map;
