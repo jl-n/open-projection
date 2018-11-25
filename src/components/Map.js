@@ -33,7 +33,7 @@ class Map extends Component {
 
     this.projection = d3projections.geoCylindricalEqualArea()
        // .rotate([-120, -14, 0]) //long, lat, 0
-       .parallel(45)
+       // .parallel(45)
        .center([0, 0]) // set centre to further North
        // .scale([w/(2*Math.PI)]) // scale to fit group width
   }
@@ -47,7 +47,7 @@ class Map extends Component {
     this.projection
        .scale([w/(2*Math.PI)*1.4]) // scale to fit group width
        .translate([w/2,h/2]) // ensure centred in group
-    this.projection.rotate([-lon, -lat/2, 0])
+    this.projection.rotate([-lat,-lon, 0])
 
     const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
     const statePaths = this._getStatePaths(mapData)
