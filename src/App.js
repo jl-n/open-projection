@@ -4,16 +4,29 @@ import './App.css';
 import MapRenderer from './components/MapRenderer'
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      lon: 0,
+      lat: 0,
+    }
+  }
 
   render() {
-    console.log(document.body.clientHeight);
+    const animate = () => {
+      this.setState({lon: 80, lat: 80})
+    }
+
+    // setTimeout(animate, 1000)
+
     return (
       <div className="App">
         <div>
           <input />
-          <button onClick={this._animate}>Go</button>
+          <input />
+          <button onClick={animate}>Go</button>
         </div>
-        <MapRenderer />
+        <MapRenderer lon={this.state.lat} lat={this.state.lon} />
       </div>
     );
   }

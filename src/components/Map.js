@@ -11,10 +11,10 @@ import MAPDATA_LOW from '../map-data/110m';
 import MAPDATA_HIGH from '../map-data/50m';
 import GRATICULES from '../map-data/graticules_10';
 
-import BATHYMETRY_0 from '../map-data/bathymetry_J_1000';
-import BATHYMETRY_1 from '../map-data/bathymetry_H_3000';
-import BATHYMETRY_2 from '../map-data/bathymetry_G_4000';
-import BATHYMETRY_3 from '../map-data/bathymetry_F_5000';
+// import BATHYMETRY_0 from '../map-data/bathymetry_J_1000';
+// import BATHYMETRY_1 from '../map-data/bathymetry_H_3000';
+// import BATHYMETRY_2 from '../map-data/bathymetry_G_4000';
+// import BATHYMETRY_3 from '../map-data/bathymetry_F_5000';
 
 class Map extends Component {
 
@@ -52,7 +52,7 @@ class Map extends Component {
     const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
     const statePaths = this._getStatePaths(mapData)
     const graticules = this.props.renderLevel === 0 ? [] : this._getGraticules(GRATICULES)
-    const bathymetry = this.props.renderLevel === 0 ? [] : this._getBathymetry([BATHYMETRY_3])
+    const bathymetry = []//this.props.renderLevel === 0 ? [] : this._getBathymetry([BATHYMETRY_3])
     const labels = this.props.renderLevel === 0 ? [] : this._getLabelData()
 
     return (
@@ -103,6 +103,7 @@ class Map extends Component {
   }
 
   _getLabelData() {
+    // TODO: This dataset is actually already available on the natural earth repo in the /geojson directory
     return this.labelData.map((c, i) => {
       const projectedCoord = this.projection([c.coordinates[0], c.coordinates[1]])
       return <Label x={projectedCoord[0]} y={projectedCoord[1]} properties={c.properties} size={c.size} key={i}/>
