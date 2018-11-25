@@ -54,8 +54,8 @@ class MapRenderer extends Component {
       */
       if(xDiff > 30 || yDiff > 30) return
 
-      const lat = this.state.lon+xDiff
-      const lon = this.state.lat-yDiff
+      const lon = this.state.lon-yDiff
+      const lat = this.state.lat+xDiff
 
       this.setState(Object.assign({}, this.state, {
         lon: lon,

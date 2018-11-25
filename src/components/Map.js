@@ -43,6 +43,7 @@ class Map extends Component {
     const h = this.props.height
     const lon = this.props.lon
     const lat = this.props.lat
+    // const projection = this.props.projection
 
     this.projection
        .scale([w/(2*Math.PI)*1.4]) // scale to fit group width
