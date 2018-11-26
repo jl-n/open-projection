@@ -11,12 +11,15 @@ import MAPDATA_LOW from '../map-data/110m';
 import MAPDATA_HIGH from '../map-data/50m';
 import GRATICULES from '../map-data/graticules_10';
 
-// import BATHYMETRY_0 from '../map-data/bathymetry_J_1000';
-// import BATHYMETRY_1 from '../map-data/bathymetry_H_3000';
-// import BATHYMETRY_2 from '../map-data/bathymetry_G_4000';
-// import BATHYMETRY_3 from '../map-data/bathymetry_F_5000';
+import BATHYMETRY_0 from '../map-data/bathymetry_J_1000';
+import BATHYMETRY_1 from '../map-data/bathymetry_H_3000';
+import BATHYMETRY_2 from '../map-data/bathymetry_G_4000';
+import BATHYMETRY_3 from '../map-data/bathymetry_F_5000';
 
 class Map extends Component {
+  constructor() {
+    super()
+  }
 
   componentWillMount() {
     const getLabelData = (data) => {
@@ -43,6 +46,7 @@ class Map extends Component {
     const h = this.props.height
     const lon = this.props.lon
     const lat = this.props.lat
+    const svgRef = this.props.svgRef
     // const projection = this.props.projection
 
     this.projection
@@ -53,11 +57,13 @@ class Map extends Component {
     const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
     const statePaths = this._getStatePaths(mapData)
     const graticules = this.props.renderLevel === 0 ? [] : this._getGraticules(GRATICULES)
-    const bathymetry = []//this.props.renderLevel === 0 ? [] : this._getBathymetry([BATHYMETRY_3])
-    const labels = this.props.renderLevel === 0 ? [] : this._getLabelData()
+    const bathymetry = this.props.renderLevel === 0 ? [] : this._getBathymetry([BATHYMETRY_3])
+    const labels = this.props.renderLevel === 0 ? [] : []//this._getLabelData()
 
     return (
-      <div className="App">
+      <div>
+
+      <div ref={this.props.svgRef}>
         <svg className="container noselect" width={this.props.width} height={this.props.height}>
           <rect width={this.props.width} height={this.props.height} fill={'#76CFF0'}></rect>
           <g className="countries">
@@ -73,6 +79,7 @@ class Map extends Component {
             {labels}
           </g>
         </svg>
+      </div>
       </div>
     );
   }

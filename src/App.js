@@ -27,6 +27,7 @@ class App extends Component {
 
     this._inputHandler = this._inputHandler.bind(this)
     this._geolocate = this._geolocate.bind(this)
+    this.svgRef = React.createRef()
   }
 
   render() {
@@ -35,24 +36,26 @@ class App extends Component {
         <div className="toolbar">
           <input onChange={this._inputHandler} />
           <button onClick={this._geolocate}>Go</button>
+
+          <a download="your_file_namess.svg" href={this._generateDownloadableSvg()}>Download</a>
+
         </div>
-        <MapRenderer lon={this.state.lat} lat={this.state.lon} />
+        <MapRenderer lon={this.state.lat} lat={this.state.lon} svgRef={this.svgRef}/>
       </div>
     );
   }
 
   _inputHandler(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
     console.log("called");
     this.setState(Object.assign({}, this.state, {searchString: e.target.value}))
   }
 
-  _geolocate(e) {
-    e.stopPropagation();
-    e.preventDefault();
+  _generateDownloadableSvg(name) {
+    console.log(this.svgRef);
+    return `data:application/octet-stream;base64,${this.svgRef.current ? btoa(this.svgRef.current.innerHTML): ''}`
+  }
 
+  _geolocate(e) {
     if(this.state.searchString.length === 0) {
       this.setState(Object.assign({}, this.state, {lat: 0, lon: 0}))
       return

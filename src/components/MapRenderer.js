@@ -73,6 +73,7 @@ class MapRenderer extends Component {
           lat={this.state.lat}
           width={document.body.clientWidth}
           height={document.body.clientHeight}
+          svgRef={this.props.svgRef}
         />
       </div>
     )

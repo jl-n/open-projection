@@ -1,9 +1,9 @@
 #Todo
 - Make the map downloadable https://jsbin.com/dusanisuwo/3/edit?html,js,output
 - Add colour schema
+- Make projection changeable
 - Add titles DONE
 - add geolocation DONE
-- Make projection changeable
 - Sop things jumping around each drag - ~DONE
 - Make dragging around high quality DONE
 - Make text render centrally rather than from the left DONE
