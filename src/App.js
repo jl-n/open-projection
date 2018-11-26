@@ -4,6 +4,17 @@ import './App.css';
 import MapRenderer from './components/MapRenderer'
 import ky from 'ky';
 
+const request = (address, callback) => {
+  const constructRequest = (a) => `https://eu1.locationiq.com/v1/search.php?key=${'10bb188a4dae33'}&q=${a}&format=json`
+  console.log("Making request");
+  (async () => {
+    console.log("WHY IS NOD");
+    const json = await ky.get(constructRequest(address)).json();
+    console.log(json);
+
+    callback(json)
+  })();
+}
 
 class App extends Component {
   constructor() {
@@ -47,18 +58,9 @@ class App extends Component {
       return
     }
 
-    this._request(this.state.searchString)
-  }
-
-  _request(address) {
-    const constructRequest = (a) => `https://eu1.locationiq.com/v1/search.php?key=${'10bb188a4dae33'}&q=${a}&format=json`
-    console.log("requesting 1");
-    (async () => {
-      console.log("WHY IS NOD");
-    	const json = await ky.get(constructRequest(address)).json();
-    	console.log(json);
-      this.setState(Object.assign({}, this.state, {lat: parseInt(json[0].lat), lon: parseInt(json[0].lon)}))
-    })();
+    request(this.state.searchString,
+      (d) => this.setState(Object.assign({}, this.state, {lat: parseInt(d[0].lat), lon: parseInt(d[0].lon)}))
+    )
   }
 }
 

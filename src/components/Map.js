@@ -105,6 +105,7 @@ class Map extends Component {
 
   _getLabelData() {
     // TODO: This dataset is actually already available on the natural earth repo in the /geojson directory
+    // This would mean no edge cases like america label offset because of Hawaii skewing centroid
     return this.labelData.map((c, i) => {
       const projectedCoord = this.projection([c.coordinates[0], c.coordinates[1]])
       return <Label x={projectedCoord[0]} y={projectedCoord[1]} properties={c.properties} size={c.size} key={i}/>

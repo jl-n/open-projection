@@ -62,12 +62,18 @@ class MapRenderer extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if(!coordinateEquals(props, this.state)){
+    if(!coordinateEquals(props, this.state) && !coordinateEquals(props, this.props)){
       this._animate(props.lat, props.lon)
+      console.log("animating")
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    const origin = {
+      lat: 0,
+      lon: 0,
+    }
+
     // Otherwise it rerenders unnecesarily (eg during typing into input box)
     if(coordinateEquals(this.props, nextProps) && objectEquals(this.state, nextState)) {
       return false
@@ -77,6 +83,7 @@ class MapRenderer extends Component {
   }
 
   render() {
+
     const renderLevel = this.state.isDragging || this.state.isAnimating ? 0 : 1
     const cursor = this.state.isDragging ? 'grabbing' : 'grab'
 
