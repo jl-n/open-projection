@@ -4,16 +4,12 @@ import Between from 'between.js';
 import Easing from 'easing-functions';
 import Map from './Map'
 
-const renderMap = (renderLevel, lon, lat) => {
-  return (
-    <Map
-        renderLevel={renderLevel}
-        lon={lon}
-        lat={lat}
-        width={document.body.clientWidth}
-        height={document.body.clientHeight}
-    />
-  )
+const coordinateEquals = (a, b) => {
+  return a.lat == b.lat && a.lon === b.lon
+}
+
+const objectEquals = (a, b) => {
+  return JSON.stringify(a) === JSON.stringify(b)
 }
 
 class MapRenderer extends Component {
@@ -32,6 +28,7 @@ class MapRenderer extends Component {
   }
 
   componentDidMount() {
+    // TODO: Refactor this to not use streams?
     const mousedownStream = _.fromEvents(document.body, 'mousedown');
     const mouseupStream = _.fromEvents(document.body, 'mouseup');
     const mousemoveStream = _.fromEvents(document.body, 'mousemove');
@@ -65,34 +62,62 @@ class MapRenderer extends Component {
   }
 
   componentWillReceiveProps(props) {
-    this._animate(props.lat, props.lon)
+    if(!coordinateEquals(props, this.state)){
+      this._animate(props.lat, props.lon)
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // Otherwise it rerenders unnecesarily (eg during typing into input box)
+    if(coordinateEquals(this.props, nextProps) && objectEquals(this.state, nextState)) {
+      return false
+    }
+
+    return true
   }
 
   render() {
-    if(this.state.isDragging || this.state.isAnimating) {
-      return renderMap(0, this.state.lon, this.state.lat)
-    }
+    const renderLevel = this.state.isDragging || this.state.isAnimating ? 0 : 1
+    const cursor = this.state.isDragging ? 'grabbing' : 'grab'
 
-    return renderMap(1, this.state.lon, this.state.lat)
+    return (
+      <div style={{cursor: cursor}}>
+        <Map
+            renderLevel={renderLevel}
+            lon={this.state.lon}
+            lat={this.state.lat}
+            width={document.body.clientWidth}
+            height={document.body.clientHeight}
+        />
+      </div>
+    )
   }
 
   _animate(destLat, destLon) {
-    console.log(destLat, destLon);
+    const destination = {
+      lat: destLat,
+      lon: destLon
+    }
 
-    // this.setState(Object.assign({}, this.state, {lat: destLat, lon: destLon}))
-
-    if(destLat !== this.state.lat || destLon !== this.state.lon) {
+    if(!coordinateEquals(this.state, destination)) {
       this.setState(Object.assign({}, this.state, {isAnimating: true}))
 
-      const b = new Between({ lat: this.state.lat, lon: this.state.lon }, { lat: destLat, lon: destLon })
+      const currentCoords = {
+        lat: this.state.lat,
+        lon: this.state.lon
+      }
+      const destCoords = {
+        lat: destLat,
+        lon: destLon
+      }
+      const tween = new Between(currentCoords, destCoords)
         .time(3000)
         .easing(Between.Easing.Cubic.InOut)
         .on('update', (v) => {
-            console.log("animating", v);
             if(this.state.isAnimating) {
               this.setState(Object.assign({}, this.state, {lat: v.lat, lon: v.lon}))
             } else {
-              b.pause()
+              tween.pause()
             }
         }).on('complete', (value) => {
             this.setState(Object.assign({}, this.state, {isAnimating: false}))

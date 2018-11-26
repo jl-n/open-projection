@@ -19,10 +19,9 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state, "STATE");
     return (
       <div className="App">
-        <div>
+        <div className="toolbar">
           <input onChange={this._inputHandler} />
           <button onClick={this._geolocate}>Go</button>
         </div>
@@ -32,10 +31,17 @@ class App extends Component {
   }
 
   _inputHandler(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    console.log("called");
     this.setState(Object.assign({}, this.state, {searchString: e.target.value}))
   }
 
-  _geolocate() {
+  _geolocate(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
     if(this.state.searchString.length === 0) {
       this.setState(Object.assign({}, this.state, {lat: 0, lon: 0}))
       return
@@ -51,7 +57,7 @@ class App extends Component {
       console.log("WHY IS NOD");
     	const json = await ky.get(constructRequest(address)).json();
     	console.log(json);
-      this.setState(Object.assign({}, this.state, {lat: json[0].lat, lon: json[0].lon}))
+      this.setState(Object.assign({}, this.state, {lat: parseInt(json[0].lat), lon: parseInt(json[0].lon)}))
     })();
   }
 }

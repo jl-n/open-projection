@@ -8,7 +8,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -33,7 +33,7 @@
 
 body {
   margin: 0;
-  background-color: #76CFF0;
+  background-color: white;
   font-family: 'Yanone Kaffeesatz', sans-serif;
   font-weight: 200;
   font-size: 17px;
@@ -56,4 +56,11 @@ html, body {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+}
+
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16rem;
 }

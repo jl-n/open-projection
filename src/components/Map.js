@@ -58,18 +58,18 @@ class Map extends Component {
 
     return (
       <div className="App">
-
         <svg className="container noselect" width={this.props.width} height={this.props.height}>
-          <g className="line">
+          <rect width={this.props.width} height={this.props.height} fill={'#76CFF0'}></rect>
+          <g className="countries">
             {statePaths}
           </g>
-          <g>
+          <g className="bathymetry">
             {bathymetry}
           </g>
-          <g>
+          <g className="graticules">
             {graticules}
           </g>
-          <g>
+          <g className="labels">
             {labels}
           </g>
         </svg>
