@@ -25,8 +25,8 @@
 What makes the Mapbox (and other maps) look nice is the land has shaded contours of elevation, and the land has shaded areas of green to pale to indicate climate
 
 # Bug tracking:
-- The slight drag glitch issue because of RX (solved by not using RX)
-- The map still dragging when selecting non map items (solved by not using RX)
+- The slight drag glitch issue because of RX (solved by not using RX) FIXED
+- The map still dragging when selecting non map items (solved by not using RX) FIXED
 - The resetting of the map when a new search is made FIXED
 
 Responsibilities of components:

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'kefir'
 import Between from 'between.js';
 import Easing from 'easing-functions';
+import { throttle, debounce } from 'throttle-debounce';
 import Map from './Map'
 
 const coordinateEquals = (a, b) => {
@@ -10,6 +11,13 @@ const coordinateEquals = (a, b) => {
 
 const objectEquals = (a, b) => {
   return JSON.stringify(a) === JSON.stringify(b)
+}
+
+const captureEvent = (handler) => {
+  return (e) => {
+    e.persist()
+    return handler(e)
+  }
 }
 
 class MapRenderer extends Component {
@@ -24,41 +32,15 @@ class MapRenderer extends Component {
       lat: 0,
       isDragging: false,
       isAnimating: false,
+      lastCusorPos: {
+        x: null,
+        y: null
+      },
     }
-  }
 
-  componentDidMount() {
-    // TODO: Refactor this to not use streams?
-    const mousedownStream = _.fromEvents(document.body, 'mousedown');
-    const mouseupStream = _.fromEvents(document.body, 'mouseup');
-    const mousemoveStream = _.fromEvents(document.body, 'mousemove');
-    const filterStream = mousedownStream
-                                .map(v => true)
-                                .merge(mouseupStream.map(v => false))
-
-    mousedownStream.onValue(v => this.setState(Object.assign({}, this.state, {isDragging: true, isAnimating: false})))
-    mouseupStream.onValue(v => this.setState(Object.assign({}, this.state, {isDragging: false})))
-
-    mousemoveStream.filterBy(filterStream).slidingWindow(2, 2).onValue(a => {
-      const xDiff = a[0].pageX - a[1].pageX
-      const yDiff = a[0].pageY - a[1].pageY
-
-      /*
-      Small bug - because the beginning value of the .slidingWindow() function is the last mouse
-      position of the last drag, there is an initial jump. We need to ignore the first value in this case.
-      It is not clear how to do this right now, so a temporary fix is to ignore setting the state if
-      the diff is too big (so it jumps if the next drag starts close but not exactly where the last one ended).
-      */
-      if(xDiff > 30 || yDiff > 30) return
-
-      const lon = this.state.lon-yDiff
-      const lat = this.state.lat+xDiff
-
-      this.setState(Object.assign({}, this.state, {
-        lon: lon,
-        lat: lat,
-      }))
-    })
+    this._mouseDownHandler = this._mouseDownHandler.bind(this)
+    this._mouseUpHandler = this._mouseUpHandler.bind(this)
+    this._mouseMoveHandler = this._mouseMoveHandler.bind(this)
   }
 
   componentWillReceiveProps(props) {
@@ -69,35 +51,72 @@ class MapRenderer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const origin = {
-      lat: 0,
-      lon: 0,
-    }
-
     // Otherwise it rerenders unnecesarily (eg during typing into input box)
     if(coordinateEquals(this.props, nextProps) && objectEquals(this.state, nextState)) {
       return false
     }
-
     return true
   }
 
   render() {
-
     const renderLevel = this.state.isDragging || this.state.isAnimating ? 0 : 1
     const cursor = this.state.isDragging ? 'grabbing' : 'grab'
 
     return (
-      <div style={{cursor: cursor}}>
+      <div style={{cursor: cursor}}
+              onMouseDown={this._mouseDownHandler}
+              onMouseUp={this._mouseUpHandler}
+              onMouseMove={captureEvent(debounce(10, this._mouseMoveHandler))}>
         <Map
-            renderLevel={renderLevel}
-            lon={this.state.lon}
-            lat={this.state.lat}
-            width={document.body.clientWidth}
-            height={document.body.clientHeight}
+          renderLevel={renderLevel}
+          lon={this.state.lon}
+          lat={this.state.lat}
+          width={document.body.clientWidth}
+          height={document.body.clientHeight}
         />
       </div>
     )
+  }
+
+  _mouseDownHandler(e) {
+    const newState = {
+      isDragging: true,
+      lastCusorPos: {
+        x: e.pageX,
+        y: e.pageY
+      }
+    }
+    this.setState(Object.assign({}, this.state, newState))
+  }
+
+  _mouseUpHandler(e) {
+    const newState = {
+      isDragging: false,
+      lastCusorPos: {
+        x: null,
+        y: null
+      }
+    }
+    this.setState(Object.assign({}, this.state, newState))
+  }
+
+  _mouseMoveHandler(e) {
+    if(this.state.isDragging) {
+      const xDiff = e.pageX - this.state.lastCusorPos.x
+      const yDiff = e.pageY - this.state.lastCusorPos.y
+
+      const lon = this.state.lon-yDiff
+      const lat = this.state.lat+xDiff
+
+      this.setState(Object.assign({}, this.state, {
+        lon: lon,
+        lat: lat,
+        lastCusorPos: {
+          x: e.pageX,
+          y: e.pageY
+        }
+      }))
+    }
   }
 
   _animate(destLat, destLon) {
@@ -105,10 +124,8 @@ class MapRenderer extends Component {
       lat: destLat,
       lon: destLon
     }
-
     if(!coordinateEquals(this.state, destination)) {
       this.setState(Object.assign({}, this.state, {isAnimating: true}))
-
       const currentCoords = {
         lat: this.state.lat,
         lon: this.state.lon
@@ -125,6 +142,11 @@ class MapRenderer extends Component {
               this.setState(Object.assign({}, this.state, {lat: v.lat, lon: v.lon}))
             } else {
               tween.pause()
+            }
+
+            if(this.state.isDragging) {
+              tween.pause()
+              this.setState(Object.assign({}, this.state, {isAnimating: false}))
             }
         }).on('complete', (value) => {
             this.setState(Object.assign({}, this.state, {isAnimating: false}))

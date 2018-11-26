@@ -90,12 +90,6 @@ class Map extends Component {
   }
 
   _getBathymetry(data) {
-    function flatten(arr) {
-      return arr.reduce(function (flat, toFlatten) {
-        return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
-      }, []);
-    }
-
     return data.map((dataset, i) => {
       return dataset.features.map((feature, j) => {
         return <Bathymetry projection={this.projection} feature={feature} key={i+j} />;

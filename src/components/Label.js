@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Label = (props) => {
   const scaleFactor = props.size*0.001
