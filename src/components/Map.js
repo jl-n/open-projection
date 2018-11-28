@@ -57,8 +57,8 @@ class Map extends Component {
     const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
     const statePaths = this._getStatePaths(mapData)
     const graticules = this.props.renderLevel === 0 ? [] : this._getGraticules(GRATICULES)
-    const bathymetry = this.props.renderLevel === 0 ? [] : this._getBathymetry([BATHYMETRY_3])
-    const labels = this.props.renderLevel === 0 ? [] : []//this._getLabelData()
+    const bathymetry = this.props.renderLevel === 0 ? [] : []//this._getBathymetry([BATHYMETRY_3])
+    const labels = this.props.renderLevel === 0 ? [] : this._getLabelData()
 
     return (
       <div>

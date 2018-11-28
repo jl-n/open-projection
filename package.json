@@ -7,6 +7,7 @@
     "between.js": "^0.1.2-fix.2",
     "d3": "^5.7.0",
     "d3-geo-projection": "^2.4.1",
+    "downloadjs": "^1.4.7",
     "easing-functions": "^1.0.1",
     "kefir": "^3.8.5",
     "ky": "^0.5.1",
