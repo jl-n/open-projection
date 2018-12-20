@@ -4,6 +4,16 @@ import './App.css';
 import MapRenderer from './components/MapRenderer'
 import ky from 'ky';
 import download from 'downloadjs'
+import feather from 'feather-icons'
+
+const icon = (name, size) => {
+  const iconSvg = feather.icons[name].toSvg({ width: size, class: 'icon' })
+  return <span dangerouslySetInnerHTML={{__html: iconSvg}}></span>
+}
+
+const themeIcon = (colorA, colorB, size) => {
+  
+}
 
 const request = (address, callback) => {
   const constructRequest = (a) => `https://eu1.locationiq.com/v1/search.php?key=${'10bb188a4dae33'}&q=${a}&format=json`
@@ -37,29 +47,25 @@ class App extends Component {
     return (
       <div className="App">
         <div className="toolbar">
-          <input onChange={this._inputHandler} />
-          <button onClick={this._geolocate}>Go</button>
-          <button onClick={this._download}>Download</button>
-
+          <input autoFocus onKeyPress={this.handleKeyPress} onChange={this._inputHandler} />
+          <div className='button' onClick={this._geolocate}>{icon('search', 16)}</div>
+          <div className='button' onClick={this._download}>{icon('download', 16)}</div>
+          <div></div>
         </div>
         <MapRenderer lon={this.state.lat} lat={this.state.lon} svgRef={this.svgRef}/>
       </div>
     );
   }
 
+  _handleKeyPress(e) {
+    if(e.key == 'Enter'){
+      this._geolocate()
+    }
+  }
+
   _inputHandler(e) {
     console.log("called");
     this.setState(Object.assign({}, this.state, {searchString: e.target.value}))
-  }
-
-  _generateDownloadableSvg(name) {
-    console.log(this.svgRef);
-    const header = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-                    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">`
-    if(!this.svgRef.current) return
-
-    const svg = header+this.svgRef.current.innerHTML
-    return `data:application/octet-stream;base64,${btoa(svg)}`
   }
 
   _download() {

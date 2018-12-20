@@ -9,6 +9,7 @@
     "d3-geo-projection": "^2.4.1",
     "downloadjs": "^1.4.7",
     "easing-functions": "^1.0.1",
+    "feather-icons": "^4.9.0",
     "kefir": "^3.8.5",
     "ky": "^0.5.1",
     "react": "^16.6.1",
