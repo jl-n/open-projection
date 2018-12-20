@@ -17,6 +17,10 @@ html, body {
   height: 100vh;
 }
 
+svg {
+  display: block;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -37,6 +41,8 @@ html, body {
   border-radius: 4px;
   /* outline: solid  3px; */
   box-shadow: 0 0 0pt 2pt rgba(0,0,0,0.07);
+  display: flex;
+  flex-wrap: wrap;
 }
 
 *:focus {
@@ -67,4 +73,17 @@ input {
 
 .button:hover {
   transform: scale(1.1);
+}
+
+.mapDownload {
+  pointer-events: none;
+  position: fixed;
+  top: 10000px;
+  left: 10000px;
+}
+
+.styleIcon {
+  margin-top: 4px;
+  border-radius: 4px;
+  overflow: hidden;
 }

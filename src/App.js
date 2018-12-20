@@ -2,17 +2,30 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import MapRenderer from './components/MapRenderer'
+import Map from './components/Map'
 import ky from 'ky';
 import download from 'downloadjs'
 import feather from 'feather-icons'
+import domtoimage from 'dom-to-image';
 
 const icon = (name, size) => {
   const iconSvg = feather.icons[name].toSvg({ width: size, class: 'icon' })
   return <span dangerouslySetInnerHTML={{__html: iconSvg}}></span>
 }
 
-const themeIcon = (colorA, colorB, size) => {
-  
+const styleIcon = (colorA, colorB, size) => {
+  return (
+    <div className='styleIcon' style={{width: size, height: size}}>
+      <svg width={size} height={size}>
+        <rect fill={colorA} x='0' y='0' width={size} height={size} />
+        <polygon fill={colorB} points={`0,0 0,${size} ${size},0`} />
+      </svg>
+    </div>
+  )
+}
+
+const updateUrl = (lat, lon, style) => {
+  window.history.replaceState({}, '', `/${lat}/${lon}/${style}`)
 }
 
 const request = (address, callback) => {
@@ -32,27 +45,63 @@ class App extends Component {
     super()
     this.state = {
       searchString: '',
-      lon: 0,
-      lat: 0,
+      searchLat: 0,
+      searchLon: 0,
+      currentLat: 0,
+      currentLon: 0,
     }
 
     this._inputHandler = this._inputHandler.bind(this)
     this._geolocate = this._geolocate.bind(this)
     this._download = this._download.bind(this)
+    this._handleKeyPress = this._handleKeyPress.bind(this)
+    this._onLocationChange = this._onLocationChange.bind(this)
+
+    // const methods = [
+    //   this._inputHandler,
+    //   this._geolocate,
+    //   this._download,
+    //   this._handleKeyPress,
+    //   this._onLocationChange,
+    // ]
+    // methods.forEach((method) => method = method.bind(self))
+
+    // const bind = (method) => method = method.bind(self)
+    //
+    // bind(this._inputHandler)
+    // bind(this._geolocate)
+    // bind(this._download)
+    // bind(this._handleKeyPress)
+    // bind(this._onLocationChange)
 
     this.svgRef = React.createRef()
+    this.downloadableMap = React.createRef();
   }
 
   render() {
     return (
       <div className="App">
         <div className="toolbar">
-          <input autoFocus onKeyPress={this.handleKeyPress} onChange={this._inputHandler} />
+          <input autoFocus onKeyPress={this._handleKeyPress} onChange={this._inputHandler} />
+
+          <div className='button'>{styleIcon('red', 'green', 16)}</div>
           <div className='button' onClick={this._geolocate}>{icon('search', 16)}</div>
           <div className='button' onClick={this._download}>{icon('download', 16)}</div>
           <div></div>
         </div>
-        <MapRenderer lon={this.state.lat} lat={this.state.lon} svgRef={this.svgRef}/>
+
+        <MapRenderer lon={this.state.searchLat} lat={this.state.searchLon} svgRef={this.svgRef} onLocationChange={this._onLocationChange}/>
+
+        <div className='mapDownload'>
+          <Map
+            renderLevel={1}
+            lon={this.state.currentLon}
+            lat={this.state.currentLat}
+            width={100}
+            height={100}
+            svgRef={this.downloadableMap}
+          />
+        </div>
       </div>
     );
   }
@@ -63,18 +112,37 @@ class App extends Component {
     }
   }
 
+  _onLocationChange(lat, lon) {
+    updateUrl(lat, lon, 'astudyinscarlett')
+    this.setState(Object.assign({}, this.state, {currentLat: lat, currentLon: lon}))
+  }
+
   _inputHandler(e) {
     console.log("called");
     this.setState(Object.assign({}, this.state, {searchString: e.target.value}))
   }
 
-  _download() {
-    console.log('hit download');
-    if(!this.svgRef.current) return
+  _download(fileFormat) {
+    console.log('Downloading...');
+    const node = this.downloadableMap.current
+    const svg = this.svgRef.current
 
-    const svg = this.svgRef.current.innerHTML
-    const blob = new Blob([svg], {type: 'image/svg+xml'});
-    download(blob, "maps.svg", "image/svg+xml");
+    console.log(node, svg);
+    if(!node) return
+
+    if(fileFormat === 'svg') {
+      const blob = new Blob([node.innerHTML], {type: 'image/svg+xml'});
+      download(blob, "maps.svg", "image/svg+xml");
+      return
+    }
+
+    domtoimage.toPng(node)
+    .then(dataUrl => {
+        download(dataUrl, 'map.png')
+    })
+    .catch(error => {
+        console.error('oops, something went wrong!', error);
+    });
   }
 
   _geolocate(e) {

@@ -27,9 +27,13 @@ class MapRenderer extends Component {
       // this.forceUpdate()
     }
 
+    const pn = window.location.pathname
+    const [lat, lon, styleName] = pn.length > 4 ? pn.split('/').slice(1) : [0,0,'fuckyeah']
+
     this.state = {
-      lon: 0,
-      lat: 0,
+      lat: parseInt(lat, 10),
+      lon: parseInt(lon, 10),
+      style: styleName, //Do some enum shit here
       isDragging: false,
       isAnimating: false,
       lastCusorPos: {
@@ -46,12 +50,11 @@ class MapRenderer extends Component {
   componentWillReceiveProps(props) {
     if(!coordinateEquals(props, this.state) && !coordinateEquals(props, this.props)){
       this._animate(props.lat, props.lon)
-      console.log("animating")
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // Otherwise it rerenders unnecesarily (eg during typing into input box)
+    // Prevent unnecesary rerenders when typing into input box
     if(coordinateEquals(this.props, nextProps) && objectEquals(this.state, nextState)) {
       return false
     }
@@ -109,6 +112,8 @@ class MapRenderer extends Component {
       const lon = this.state.lon-yDiff
       const lat = this.state.lat+xDiff
 
+      this.props.onLocationChange(lat, lon, 'fuckyeah')
+
       this.setState(Object.assign({}, this.state, {
         lon: lon,
         lat: lat,
@@ -125,6 +130,7 @@ class MapRenderer extends Component {
       lat: destLat,
       lon: destLon
     }
+    let onLocationChange = this.props.onLocationChange
     if(!coordinateEquals(this.state, destination)) {
       this.setState(Object.assign({}, this.state, {isAnimating: true}))
       const currentCoords = {
@@ -150,6 +156,7 @@ class MapRenderer extends Component {
               this.setState(Object.assign({}, this.state, {isAnimating: false}))
             }
         }).on('complete', (value) => {
+            onLocationChange(this.state.lat, this.state.lon)
             this.setState(Object.assign({}, this.state, {isAnimating: false}))
         });
     }

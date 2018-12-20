@@ -8,7 +8,7 @@ import Graticule from './Graticule'
 import Bathymetry from './Bathymetry'
 
 import MAPDATA_LOW from '../map-data/110m';
-import MAPDATA_HIGH from '../map-data/110m';//'../map-data/50m';
+import MAPDATA_HIGH from '../map-data/50m';
 // import GRATICULES from '../map-data/graticules_10';
 //
 // import BATHYMETRY_0 from '../map-data/bathymetry_J_1000';
@@ -62,24 +62,23 @@ class Map extends Component {
 
     return (
       <div>
-
-      <div ref={this.props.svgRef}>
-        <svg className="container noselect" width={this.props.width} height={this.props.height}>
-          <rect width={this.props.width} height={this.props.height} fill={'#76CFF0'}></rect>
-          <g className="countries">
-            {statePaths}
-          </g>
-          <g className="bathymetry">
-            {bathymetry}
-          </g>
-          <g className="graticules">
-            {graticules}
-          </g>
-          <g className="labels">
-            {labels}
-          </g>
-        </svg>
-      </div>
+        <div ref={this.props.svgRef}>
+          <svg className="container noselect" width={this.props.width} height={this.props.height}>
+            <rect width={this.props.width} height={this.props.height} fill={'#76CFF0'}></rect>
+            <g className="countries">
+              {statePaths}
+            </g>
+            <g className="bathymetry">
+              {bathymetry}
+            </g>
+            <g className="graticules">
+              {graticules}
+            </g>
+            <g className="labels">
+              {labels}
+            </g>
+          </svg>
+        </div>
       </div>
     );
   }

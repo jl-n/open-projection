@@ -28,13 +28,18 @@ What makes the Mapbox (and other maps) look nice is the land has shaded contours
 - The slight drag glitch issue because of RX (solved by not using RX) FIXED
 - The map still dragging when selecting non map items (solved by not using RX) FIXED
 - The resetting of the map when a new search is made FIXED
-- When rendering the svg
+- When rendering the svg FIXED
   - The download takes for fucking ever because file so large, data uri cant handle it
   - Special characters like Å (in Åland - the fuck) cause other programs to not be able to load it. I need to parse all labels to replace instances of this
     https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references
     Look into entity encoding (some kind of escaping of characters)
-    
+
 Responsibilities of components:
 - Map: from some basic parameters, renders a map
 - MapRenderer: enables animation, drag behaviour
 - App: geolocation, styles, etc.
+
+
+How downloading will work:
+- Map component takes a set of parameters including a callback that calls when the map has been dragged
+- Parameters include the map style
