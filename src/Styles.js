@@ -12,6 +12,13 @@ const styles = [
     sea: 'red',
     labels: 'white',
     borders: 'orange'
+  },
+  {
+    name: 'namria',
+    land: '#E6E8E9',
+    sea: '#C4D4E0',
+    labels: 'black',
+    border: '#B90700',
   }
 ]
 

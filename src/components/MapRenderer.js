@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import _ from 'kefir'
 import Between from 'between.js';
-import Easing from 'easing-functions';
-import { throttle, debounce } from 'throttle-debounce';
+import { debounce } from 'throttle-debounce';
 import Map from './Map'
 import styles from '../Styles'
 
@@ -25,16 +23,13 @@ class MapRenderer extends Component {
   constructor() {
     super()
     window.onresize = () => {
-      // this.forceUpdate()
+      this.forceUpdate()
     }
 
-    const pn = window.location.pathname
-    const [lat, lon, styleName] = pn.length > 4 ? pn.split('/').slice(1) : [0,0,styles[0].name]
-
     this.state = {
-      lat: parseInt(lat, 10),
-      lon: parseInt(lon, 10),
-      style: styles.filter(s => s.name === styleName)[0],
+      lat: 0,
+      lon: 0,
+      style: styles[0],
       isDragging: false,
       isAnimating: false,
       lastCusorPos: {
@@ -48,23 +43,21 @@ class MapRenderer extends Component {
     this._mouseMoveHandler = this._mouseMoveHandler.bind(this)
   }
 
+  componentDidMount() {
+    this.setState(Object.assign({}, this.state, {lat: this.props.lat, lon: this.props.lon}))
+  }
+
   componentWillReceiveProps(props) {
-    console.log(props, 'componentWillRecieve');
     if(!coordinateEquals(props, this.state) && !coordinateEquals(props, this.props)){
       this._animate(props.lat, props.lon)
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // console.log(nextProps, this.props, 'shouldComponentUpdate props');
-    // console.log(nextState, this.state, 'shouldComponentUpdate state');
-
     // Prevent unnecesary rerenders when typing into input box
     if(objectEquals(this.props, nextProps) && objectEquals(this.state, nextState)) {
-      console.log('not updating');
       return false
     }
-    console.log('updating');
     return true
   }
 
@@ -80,8 +73,8 @@ class MapRenderer extends Component {
         <Map
           mapStyle={this.props.mapStyle}
           renderLevel={renderLevel}
-          lon={this.state.lon}
           lat={this.state.lat}
+          lon={this.state.lon}
           width={document.body.clientWidth}
           height={document.body.clientHeight}
         />
@@ -133,22 +126,19 @@ class MapRenderer extends Component {
   }
 
   _animate(destLat, destLon) {
-    const destination = {
+    let onLocationChange = this.props.onLocationChange
+    const destCoords = {
       lat: destLat,
       lon: destLon
     }
 
-    let onLocationChange = this.props.onLocationChange
-    if(!coordinateEquals(this.state, destination)) {
+    if(!coordinateEquals(this.state, destCoords)) {
       this.setState(Object.assign({}, this.state, {isAnimating: true}))
       const currentCoords = {
         lat: this.state.lat,
         lon: this.state.lon
       }
-      const destCoords = {
-        lat: destLat,
-        lon: destLon
-      }
+
       const tween = new Between(currentCoords, destCoords)
         .time(3000)
         .easing(Between.Easing.Cubic.InOut)

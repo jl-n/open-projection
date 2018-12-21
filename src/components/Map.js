@@ -54,12 +54,10 @@ class Map extends Component {
     const svgRef = this.props.svgRef
     // const projection = this.props.projection
 
-    // console.log(lon, lat);
-
     this.projection
        .scale([w/(2*Math.PI)*1.4]) // scale to fit group width
        .translate([w/2,h/2]) // ensure centred in group
-    this.projection.rotate([-lat,-lon, 0])
+    this.projection.rotate([-lon,-lat, 0])
 
     const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
     const statePaths = this._getStatePaths(mapData)
@@ -69,7 +67,7 @@ class Map extends Component {
 
     return (
       <div>
-        <div ref={this.props.svgRef ? this.props.svgRef : null}>
+        <div ref={svgRef ? svgRef : null}>
           <svg className="container noselect" width={this.props.width} height={this.props.height}>
             <rect width={this.props.width} height={this.props.height} fill={this.props.mapStyle.sea}></rect>
             <g className="countries">
