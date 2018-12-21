@@ -1,7 +1,6 @@
 #Todo
-- Make the map downloadable https://jsbin.com/dusanisuwo/3/edit?html,js,output
-- Add colour schema
-- Make projection changeable
+- Make the map downloadable DONE
+- Add colour schema DONE
 - Add titles DONE
 - add geolocation DONE
 - Sop things jumping around each drag - ~DONE
@@ -10,6 +9,15 @@
 - Graticules DONE
 - Bathymetry DONE
 
+- Make projection changeable
+- Ensure text is sized reasonably at all map sizes
+- Add .png and .svg options to download button
+- Add radio boxes to enable (or disable) various map layers
+- Make the url configs more robust (type sanitation)
+- Question mark popup for the "about this project"
+- Hide toolbar
+- Make it render quicker by not rendering the download map page until only when neccesary
+- Test on mobile?
 
 #Ideas
 - Consider layers - people can select what goes onto the exported print ready svg file

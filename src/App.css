@@ -92,6 +92,7 @@ input {
   border-top: solid rgba(0,0,0, 0.05) 1px;
   border-radius: 0 0 4px 4px;
   color: green;
+  cursor: pointer;
 
   transition: ease-in all 0.03s;
 }

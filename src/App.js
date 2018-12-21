@@ -84,14 +84,14 @@ class App extends Component {
 
         <MapRenderer mapStyle={this.state.style} lat={this.state.searchLat} lon={this.state.searchLon} onLocationChange={this._onLocationChange}/>
 
-        <div className='mapDownload'>
+        <div style={{display: 'none'}} className='mapDownload'>
           <Map
             mapStyle={this.state.style}
             renderLevel={1}
             lon={this.state.currentLon}
             lat={this.state.currentLat}
-            width={100}
-            height={100}
+            width={4000}
+            height={2000}
             svgRef={this.downloadableMap}
           />
         </div>
@@ -122,9 +122,7 @@ class App extends Component {
   _download(fileFormat) {
     console.log('Downloading...');
     const node = this.downloadableMap.current
-    const svg = this.svgRef.current
 
-    console.log(node, svg);
     if(!node) return
 
     if(fileFormat === 'svg') {
