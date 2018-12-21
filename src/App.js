@@ -80,7 +80,7 @@ class App extends Component {
           <div className='button' onClick={this._download}>{icon('download', 16)}</div>
         </div>
 
-        <MapRenderer mapStyle={styles.filter(s => s.name === this.state.style)[0]} lon={this.state.searchLat} lat={this.state.searchLon} svgRef={this.svgRef} onLocationChange={this._onLocationChange}/>
+        <MapRenderer mapStyle={styles.filter(s => s.name === this.state.style)[0]} lon={this.state.searchLat} lat={this.state.searchLon} onLocationChange={this._onLocationChange}/>
 
         <div className='mapDownload'>
           <Map
@@ -115,7 +115,6 @@ class App extends Component {
   }
 
   _inputHandler(e) {
-    console.log("called");
     this.setState(Object.assign({}, this.state, {searchString: e.target.value}))
   }
 
@@ -144,12 +143,12 @@ class App extends Component {
 
   _geolocate(e) {
     if(this.state.searchString.length === 0) {
-      this.setState(Object.assign({}, this.state, {lat: 0, lon: 0}))
+      this.setState(Object.assign({}, this.state, {searchLat: 0, searchLon: 0}))
       return
     }
 
     request(this.state.searchString,
-      (d) => this.setState(Object.assign({}, this.state, {lat: parseInt(d[0].lat), lon: parseInt(d[0].lon)}))
+      (d) => this.setState(Object.assign({}, this.state, {searchLat: parseInt(d[0].lat), searchLon: parseInt(d[0].lon)}))
     )
   }
 }

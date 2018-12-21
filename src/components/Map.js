@@ -69,7 +69,7 @@ class Map extends Component {
 
     return (
       <div>
-        <div ref={this.props.svgRef}>
+        <div ref={this.props.svgRef ? this.props.svgRef : null}>
           <svg className="container noselect" width={this.props.width} height={this.props.height}>
             <rect width={this.props.width} height={this.props.height} fill={this.props.mapStyle.sea}></rect>
             <g className="countries">

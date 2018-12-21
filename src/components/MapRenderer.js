@@ -7,7 +7,7 @@ import Map from './Map'
 import styles from '../Styles'
 
 const coordinateEquals = (a, b) => {
-  return a.lat == b.lat && a.lon === b.lon
+  return a.lat === b.lat && a.lon === b.lon
 }
 
 const objectEquals = (a, b) => {
@@ -49,21 +49,22 @@ class MapRenderer extends Component {
   }
 
   componentWillReceiveProps(props) {
+    console.log(props, 'componentWillRecieve');
     if(!coordinateEquals(props, this.state) && !coordinateEquals(props, this.props)){
       this._animate(props.lat, props.lon)
     }
-
-    // this._animate(props.lat, props.lon)
-
-    this._animate(props.lat, props.lon)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    // console.log(nextProps, this.props, 'shouldComponentUpdate props');
+    // console.log(nextState, this.state, 'shouldComponentUpdate state');
+
     // Prevent unnecesary rerenders when typing into input box
-    if(coordinateEquals(this.props, nextProps) && objectEquals(this.state, nextState)) {
+    if(objectEquals(this.props, nextProps) && objectEquals(this.state, nextState)) {
+      console.log('not updating');
       return false
     }
-
+    console.log('updating');
     return true
   }
 
@@ -83,7 +84,6 @@ class MapRenderer extends Component {
           lat={this.state.lat}
           width={document.body.clientWidth}
           height={document.body.clientHeight}
-          svgRef={this.props.svgRef}
         />
       </div>
     )
