@@ -6,7 +6,7 @@ const Country = (props) => {
 
   return (
     <g>
-      <path className='country' d={path(props.feature)} fill="#EFE9E1" stroke="#FEAB6C" strokeWidth={0.35} />
+      <path className='country' d={path(props.feature)} fill={props.fill} stroke={props.stroke} strokeWidth={0.35} />
     </g>
   )
 }

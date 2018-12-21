@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import MapRenderer from './components/MapRenderer'
 import Map from './components/Map'
+import styles from './Styles'
 import ky from 'ky';
 import download from 'downloadjs'
 import feather from 'feather-icons'
@@ -49,51 +50,41 @@ class App extends Component {
       searchLon: 0,
       currentLat: 0,
       currentLon: 0,
+      style: styles[0].name,
     }
+
+    this.svgRef = React.createRef()
+    this.downloadableMap = React.createRef();
 
     this._inputHandler = this._inputHandler.bind(this)
     this._geolocate = this._geolocate.bind(this)
     this._download = this._download.bind(this)
     this._handleKeyPress = this._handleKeyPress.bind(this)
     this._onLocationChange = this._onLocationChange.bind(this)
-
-    // const methods = [
-    //   this._inputHandler,
-    //   this._geolocate,
-    //   this._download,
-    //   this._handleKeyPress,
-    //   this._onLocationChange,
-    // ]
-    // methods.forEach((method) => method = method.bind(self))
-
-    // const bind = (method) => method = method.bind(self)
-    //
-    // bind(this._inputHandler)
-    // bind(this._geolocate)
-    // bind(this._download)
-    // bind(this._handleKeyPress)
-    // bind(this._onLocationChange)
-
-    this.svgRef = React.createRef()
-    this.downloadableMap = React.createRef();
+    this._changeStyle = this._changeStyle.bind(this)
   }
 
   render() {
+    const styleIcons = styles.map(s => {
+      return <div onClick={() => this._changeStyle(s.name)} className='button'>{styleIcon(s.land, s.sea, 16)}</div>
+    })
+
+    // console.log(styles.filter(s => s.name === this.state.style)[0]);
+
     return (
       <div className="App">
         <div className="toolbar">
           <input autoFocus onKeyPress={this._handleKeyPress} onChange={this._inputHandler} />
-
-          <div className='button'>{styleIcon('red', 'green', 16)}</div>
+          {styleIcons}
           <div className='button' onClick={this._geolocate}>{icon('search', 16)}</div>
           <div className='button' onClick={this._download}>{icon('download', 16)}</div>
-          <div></div>
         </div>
 
-        <MapRenderer lon={this.state.searchLat} lat={this.state.searchLon} svgRef={this.svgRef} onLocationChange={this._onLocationChange}/>
+        <MapRenderer mapStyle={styles.filter(s => s.name === this.state.style)[0]} lon={this.state.searchLat} lat={this.state.searchLon} svgRef={this.svgRef} onLocationChange={this._onLocationChange}/>
 
         <div className='mapDownload'>
           <Map
+            mapStyle={styles.filter(s => s.name === this.state.style)[0]}
             renderLevel={1}
             lon={this.state.currentLon}
             lat={this.state.currentLat}
@@ -106,6 +97,12 @@ class App extends Component {
     );
   }
 
+  _changeStyle(s) {
+    console.log('style changed', s);
+    updateUrl(this.state.currentLat, this.state.currentLon, s)
+    this.setState(Object.assign({}, this.state, {style: s}))
+  }
+
   _handleKeyPress(e) {
     if(e.key == 'Enter'){
       this._geolocate()
@@ -113,7 +110,7 @@ class App extends Component {
   }
 
   _onLocationChange(lat, lon) {
-    updateUrl(lat, lon, 'astudyinscarlett')
+    updateUrl(lat, lon, styles[0].name)
     this.setState(Object.assign({}, this.state, {currentLat: lat, currentLon: lon}))
   }
 

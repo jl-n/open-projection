@@ -4,6 +4,7 @@ import Between from 'between.js';
 import Easing from 'easing-functions';
 import { throttle, debounce } from 'throttle-debounce';
 import Map from './Map'
+import styles from '../Styles'
 
 const coordinateEquals = (a, b) => {
   return a.lat == b.lat && a.lon === b.lon
@@ -28,12 +29,12 @@ class MapRenderer extends Component {
     }
 
     const pn = window.location.pathname
-    const [lat, lon, styleName] = pn.length > 4 ? pn.split('/').slice(1) : [0,0,'fuckyeah']
+    const [lat, lon, styleName] = pn.length > 4 ? pn.split('/').slice(1) : [0,0,styles[0].name]
 
     this.state = {
       lat: parseInt(lat, 10),
       lon: parseInt(lon, 10),
-      style: styleName, //Do some enum shit here
+      style: styles.filter(s => s.name === styleName)[0],
       isDragging: false,
       isAnimating: false,
       lastCusorPos: {
@@ -51,6 +52,10 @@ class MapRenderer extends Component {
     if(!coordinateEquals(props, this.state) && !coordinateEquals(props, this.props)){
       this._animate(props.lat, props.lon)
     }
+
+    // this._animate(props.lat, props.lon)
+
+    this._animate(props.lat, props.lon)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -58,6 +63,7 @@ class MapRenderer extends Component {
     if(coordinateEquals(this.props, nextProps) && objectEquals(this.state, nextState)) {
       return false
     }
+
     return true
   }
 
@@ -71,6 +77,7 @@ class MapRenderer extends Component {
               onMouseUp={this._mouseUpHandler}
               onMouseMove={captureEvent(debounce(10, this._mouseMoveHandler))}>
         <Map
+          mapStyle={this.props.mapStyle}
           renderLevel={renderLevel}
           lon={this.state.lon}
           lat={this.state.lat}
@@ -112,7 +119,7 @@ class MapRenderer extends Component {
       const lon = this.state.lon-yDiff
       const lat = this.state.lat+xDiff
 
-      this.props.onLocationChange(lat, lon, 'fuckyeah')
+      this.props.onLocationChange(lat, lon, this.props.mapStyle.name)
 
       this.setState(Object.assign({}, this.state, {
         lon: lon,
@@ -130,6 +137,7 @@ class MapRenderer extends Component {
       lat: destLat,
       lon: destLon
     }
+
     let onLocationChange = this.props.onLocationChange
     if(!coordinateEquals(this.state, destination)) {
       this.setState(Object.assign({}, this.state, {isAnimating: true}))

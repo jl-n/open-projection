@@ -19,6 +19,11 @@ import MAPDATA_HIGH from '../map-data/50m';
 class Map extends Component {
   constructor() {
     super()
+
+    this._getStatePaths = this._getStatePaths.bind(this)
+    this._getGraticules = this._getGraticules.bind(this)
+    this._getBathymetry = this._getBathymetry.bind(this)
+    this._getLabelData = this._getLabelData.bind(this)
   }
 
   componentWillMount() {
@@ -49,6 +54,8 @@ class Map extends Component {
     const svgRef = this.props.svgRef
     // const projection = this.props.projection
 
+    // console.log(lon, lat);
+
     this.projection
        .scale([w/(2*Math.PI)*1.4]) // scale to fit group width
        .translate([w/2,h/2]) // ensure centred in group
@@ -64,7 +71,7 @@ class Map extends Component {
       <div>
         <div ref={this.props.svgRef}>
           <svg className="container noselect" width={this.props.width} height={this.props.height}>
-            <rect width={this.props.width} height={this.props.height} fill={'#76CFF0'}></rect>
+            <rect width={this.props.width} height={this.props.height} fill={this.props.mapStyle.sea}></rect>
             <g className="countries">
               {statePaths}
             </g>
@@ -85,7 +92,7 @@ class Map extends Component {
 
   _getStatePaths(data) {
     return data.features.map((feature, i) => {
-      return <Country projection={this.projection} feature={feature} key={i} />;
+      return <Country stroke={this.props.mapStyle.borders} fill={this.props.mapStyle.land} projection={this.projection} feature={feature} key={i} />;
     })
   }
 
@@ -98,7 +105,7 @@ class Map extends Component {
   _getBathymetry(data) {
     return data.map((dataset, i) => {
       return dataset.features.map((feature, j) => {
-        return <Bathymetry projection={this.projection} feature={feature} key={i+j} />;
+        return <Bathymetry fill={this.props.mapStyle.sea} projection={this.projection} feature={feature} key={i+j} />;
       })
     })
   }

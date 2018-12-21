@@ -7,7 +7,7 @@ const Bathymetry = (props) => {
 
   return (
     <g>
-      <path className='bathymetry' d={path(props.feature)} fill="rgba(100, 160, 240, 0.63)" stroke="#FEAB6C" strokeWidth={0} />
+      <path className='bathymetry' d={path(props.feature)} fill={props.fill} stroke="#FEAB6C" strokeWidth={0} />
     </g>
   )
 }

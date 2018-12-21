@@ -1,13 +1,13 @@
 const styles = [
   {
-    name: 'brown',
+    name: 'brownie',
     land: 'brown',
     sea: 'blue',
     labels: 'white',
     borders: 'orange'
   },
   {
-    name: 'orange',
+    name: 'orangeface',
     land: 'orange',
     sea: 'red',
     labels: 'white',
