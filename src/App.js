@@ -81,7 +81,7 @@ class App extends Component {
     })
 
     const projectionList = projections.map((p, i) => {
-      return <li key={i} onClick={() => this.setState(Object.assign({}, this.state, {projection: p.name}))}>{p.displayName}</li>
+      return <div key={i} onClick={() => this.setState(Object.assign({}, this.state, {projection: p.name}))}>{p.displayName}</div>
     })
 
     return (
@@ -94,9 +94,9 @@ class App extends Component {
           <div className='map-styles'>
             {styleIcons}
           </div>
-          <ul>
+          <div className='projections'>
             {projectionList}
-          </ul>
+          </div>
           <div className='download' onClick={this._download}>{icon('download', 16)}</div>
         </div>
 
@@ -113,6 +113,7 @@ class App extends Component {
   }
 
   _updateSvg(s) {
+    console.log('update SVG calback: ', s);
     this.setState(Object.assign({}, this.state, {svgNode: s}))
   }
 
@@ -144,6 +145,8 @@ class App extends Component {
 
     if(!node) return
 
+    // return
+
     if(fileFormat === 'svg') {
       const blob = new Blob([node.innerHTML], {type: 'image/svg+xml'});
       download(blob, "maps.svg", "image/svg+xml");
@@ -151,12 +154,12 @@ class App extends Component {
     }
 
     domtoimage.toPng(node)
-    .then(dataUrl => {
-        download(dataUrl, 'map.png')
-    })
-    .catch(error => {
-        console.error('oops, something went wrong!', error);
-    });
+      .then(dataUrl => {
+          download(dataUrl, 'map.png')
+      })
+      .catch(error => {
+          console.error('oops, something went wrong!', error);
+      });
   }
 
   _geolocate(e) {

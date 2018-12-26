@@ -67,17 +67,19 @@ class MapRenderer extends Component {
     const downloadableMap = (
       <div className='mapDownload'>
         <Map
-          mapStyle={this.state.style}
-          renderLevel={1}
+          mapStyle={this.props.mapStyle}
+          renderLevel={renderLevel}
           projection={this.props.projection}
-          lon={this.state.currentLon}
-          lat={this.state.currentLat}
+          lat={this.state.lat}
+          lon={this.state.lon}
           width={4000}
           height={2000}
           updateSvg={this.props.updateSvg}
+
         />
       </div>
     )
+
 
     return (
       <div style={{cursor: cursor}}
@@ -101,7 +103,6 @@ class MapRenderer extends Component {
   }
 
   _mouseDownHandler(e) {
-    console.log(e);
     const newState = {
       isDragging: true,
       lastCusorPos: {
