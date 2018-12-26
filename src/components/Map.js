@@ -48,6 +48,11 @@ class Map extends Component {
        // .scale([w/(2*Math.PI)]) // scale to fit group width
   }
 
+  componentWillReceiveProps(props) {
+    console.log(d3projections[this.props.projection]);
+    this.projection = d3projections[this.props.projection]().center([0, 0])
+  }
+
   componentDidUpdate(props) {
     if(props.updateSvg) {
       this.props.updateSvg(this.svgRef.current)

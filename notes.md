@@ -8,6 +8,7 @@
 - Make text render centrally rather than from the left DONE
 - Graticules DONE
 - Bathymetry DONE
+- Make it render quicker by not rendering the download map page until only when neccesary DONE
 
 - Make projection changeable
 - Ensure text is sized reasonably at all map sizes
@@ -16,8 +17,8 @@
 - Make the url configs more robust (type sanitation)
 - Question mark popup for the "about this project"
 - Hide toolbar
-- Make it render quicker by not rendering the download map page until only when neccesary
-- Test on mobile?
+- Refactor app.js functions into Util object
+- Refactor map components into a map folder
 
 #Ideas
 - Consider layers - people can select what goes onto the exported print ready svg file

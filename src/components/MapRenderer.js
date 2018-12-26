@@ -69,6 +69,7 @@ class MapRenderer extends Component {
         <Map
           mapStyle={this.state.style}
           renderLevel={1}
+          projection={this.props.projection}
           lon={this.state.currentLon}
           lat={this.state.currentLat}
           width={4000}
@@ -83,9 +84,11 @@ class MapRenderer extends Component {
               onMouseDown={this._mouseDownHandler}
               onMouseUp={this._mouseUpHandler}
               onMouseMove={captureEvent(debounce(10, this._mouseMoveHandler))}>
+
         <Map
           mapStyle={this.props.mapStyle}
           renderLevel={renderLevel}
+          projection={this.props.projection}
           lat={this.state.lat}
           lon={this.state.lon}
           width={document.body.clientWidth}
@@ -98,6 +101,7 @@ class MapRenderer extends Component {
   }
 
   _mouseDownHandler(e) {
+    console.log(e);
     const newState = {
       isDragging: true,
       lastCusorPos: {

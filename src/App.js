@@ -7,15 +7,21 @@ import ky from 'ky';
 import download from 'downloadjs'
 import feather from 'feather-icons'
 import domtoimage from 'dom-to-image';
+import projections from './Projections'
 
 const icon = (name, size) => {
   const iconSvg = feather.icons[name].toSvg({ width: size, class: 'icon' })
   return <span dangerouslySetInnerHTML={{__html: iconSvg}}></span>
 }
 
-const styleIcon = (colorA, colorB, size) => {
+const styleIcon = (colorA, colorB, size, isSelected) => {
+  const style = {
+    width: size,
+    height: size,
+    boxShadow: isSelected ? '0 0 0pt 1.5pt rgba(0,0,0,0.2)' : 'none',
+  }
   return (
-    <div className='styleIcon' style={{width: size, height: size}}>
+    <div className='styleIcon' style={style}>
       <svg width={size} height={size}>
         <rect fill={colorA} x='0' y='0' width={size} height={size} />
         <polygon fill={colorB} points={`0,0 0,${size} ${size},0`} />
@@ -50,13 +56,12 @@ class App extends Component {
       searchString: '',
       searchLat: parseInt(lat, 10),
       searchLon: parseInt(lon, 10),
+      projection: projections[0].name,
       currentLat: 0,
       currentLon: 0,
       style: styles.filter(s => s.name === styleName)[0],
       svgNode: null
     }
-
-    // this.svgRef = React.createRef();
 
     this._inputHandler = this._inputHandler.bind(this)
     this._geolocate = this._geolocate.bind(this)
@@ -65,26 +70,39 @@ class App extends Component {
     this._onLocationChange = this._onLocationChange.bind(this)
     this._changeStyle = this._changeStyle.bind(this)
     this._updateSvg = this._updateSvg.bind(this)
+
+    console.log(projections);
   }
 
   render() {
     const styleIcons = styles.map((s, key) => {
-      return <div key={key} onClick={() => this._changeStyle(s)} className='button'>{styleIcon(s.land, s.sea, 16)}</div>
+      const isSelected = s.name === this.state.style.name
+      return <div key={key} onClick={() => this._changeStyle(s)} className='button'>{styleIcon(s.land, s.sea, 16, isSelected)}</div>
+    })
+
+    const projectionList = projections.map((p, i) => {
+      return <li key={i} onClick={() => this.setState(Object.assign({}, this.state, {projection: p.name}))}>{p.displayName}</li>
     })
 
     return (
       <div className="App">
         <div className="toolbar">
           <div className='input'>
-            <input autoFocus onKeyPress={this._handleKeyPress} onChange={this._inputHandler} />
+            <input autoFocus placeholder='Type any location...' onKeyPress={this._handleKeyPress} onChange={this._inputHandler} />
             <div className='button' onClick={this._geolocate}>{icon('search', 16)}</div>
           </div>
-          {styleIcons}
+          <div className='map-styles'>
+            {styleIcons}
+          </div>
+          <ul>
+            {projectionList}
+          </ul>
           <div className='download' onClick={this._download}>{icon('download', 16)}</div>
         </div>
 
         <MapRenderer
           mapStyle={this.state.style}
+          projection={this.state.projection}
           lat={this.state.searchLat}
           lon={this.state.searchLon}
           onLocationChange={this._onLocationChange}
