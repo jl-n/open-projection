@@ -12,15 +12,15 @@
 - Make projection changeable DONE
 - Add projection to url params DONE
 - Make the url configs more robust (type sanitation) DONE
+- Add .png and .svg options to download button DONE
 
-- Add .png and .svg options to download button
+- Refactor app.js functions into Util object
+- Refactor map components into a map folder
 - Make download aspect ratio match projected map
 - Ensure text is sized reasonably at all map sizes
 - Add radio boxes to enable (or disable) various map layers
 - Question mark popup for the "about this project"
 - Hide toolbar
-- Refactor app.js functions into Util object
-- Refactor map components into a map folder
 
 #First release MVP goal:
 - geolocation
