@@ -55,20 +55,18 @@ class Map extends Component {
   }
 
   render() {
-    console.log(this.props);
-    this.projection = d3projections[this.props.projection]().center([0, 0])
-
     const w = this.props.width
     const h = this.props.height
     const lon = this.props.lon
     const lat = this.props.lat
-    const svgRef = this.props.svgRef
-    // const projection = this.props.projection
+    const projection = 'geo'+this.props.projection
+
+    this.projection = d3projections[projection]().center([0, 0])
 
     this.projection
        .scale([w/(2*Math.PI)*1.4]) // scale to fit group width
        .translate([w/2,h/2]) // ensure centred in group
-    this.projection.rotate([-lon,-lat, 0])
+       .rotate([-lon,-lat, 0])
 
     const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
     const statePaths = this._getStatePaths(mapData)

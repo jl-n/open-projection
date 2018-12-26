@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import MapRenderer from './components/MapRenderer'
-import Map from './components/Map'
 import styles from './Styles'
 import ky from 'ky';
 import download from 'downloadjs'
@@ -30,8 +29,8 @@ const styleIcon = (colorA, colorB, size, isSelected) => {
   )
 }
 
-const updateUrl = (lat, lon, style) => {
-  window.history.replaceState({}, '', `/${lat}/${lon}/${style}`)
+const updateUrl = (lat, lon, projection, style) => {
+  window.history.replaceState({}, '', `/${lat}/${lon}/${projection}/${style}`)
 }
 
 const request = (address, callback) => {
@@ -50,18 +49,20 @@ class App extends Component {
   constructor() {
     super()
     const pn = window.location.pathname.split('/')
-    const [lat, lon, styleName] = (pn.length === 4 ? pn.slice(1) : [0, 0, styles[0].name])
+    const [lat, lon, projection, styleName] = (pn.length === 5 ? pn.slice(1) : [0, 0, projections[0].name, styles[0].name])
 
     this.state = {
       searchString: '',
       searchLat: parseInt(lat, 10),
       searchLon: parseInt(lon, 10),
-      projection: projections[0].name,
+      projection:  projection,
       currentLat: 0,
       currentLon: 0,
       style: styles.filter(s => s.name === styleName)[0],
       svgNode: null
     }
+
+
 
     this._inputHandler = this._inputHandler.bind(this)
     this._geolocate = this._geolocate.bind(this)
@@ -69,9 +70,8 @@ class App extends Component {
     this._handleKeyPress = this._handleKeyPress.bind(this)
     this._onLocationChange = this._onLocationChange.bind(this)
     this._changeStyle = this._changeStyle.bind(this)
+    this._changeProjection = this._changeProjection.bind(this)
     this._updateSvg = this._updateSvg.bind(this)
-
-    console.log(projections);
   }
 
   render() {
@@ -81,7 +81,7 @@ class App extends Component {
     })
 
     const projectionList = projections.map((p, i) => {
-      return <div key={i} onClick={() => this.setState(Object.assign({}, this.state, {projection: p.name}))}>{p.displayName}</div>
+      return <div key={i} onClick={() => this._changeProjection(p.name)}>{p.displayName}</div>
     })
 
     return (
@@ -113,13 +113,17 @@ class App extends Component {
   }
 
   _updateSvg(s) {
-    console.log('update SVG calback: ', s);
     this.setState(Object.assign({}, this.state, {svgNode: s}))
   }
 
   _changeStyle(s) {
-    updateUrl(this.state.currentLat, this.state.currentLon, s.name)
+    updateUrl(this.state.currentLat, this.state.currentLon, this.state.projection, s.name)
     this.setState(Object.assign({}, this.state, {style: s}))
+  }
+
+  _changeProjection(projectionName) {
+    updateUrl(this.state.currentLat, this.state.currentLon, projectionName, this.state.style.name)
+    this.setState(Object.assign({}, this.state, {projection: projectionName}))
   }
 
   _handleKeyPress(e) {
@@ -129,7 +133,7 @@ class App extends Component {
   }
 
   _onLocationChange(lat, lon) {
-    updateUrl(lat, lon, this.state.style.name)
+    updateUrl(lat, lon, this.state.projection, this.state.style.name)
     this.setState(Object.assign({}, this.state, {currentLat: lat, currentLon: lon}))
   }
 

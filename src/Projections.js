@@ -6,7 +6,7 @@ const compatibleProjections = (name) => {
 
 const projections = Object.keys(d3projections).filter(compatibleProjections).map(v => {
   return {
-    name: v,
+    name: v.replace(/geo/g, ''),
     displayName: v.replace(/geo/g, '').replace(/([A-Z])/g, ' $1').trim()
   }
 })

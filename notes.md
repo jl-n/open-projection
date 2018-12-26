@@ -3,29 +3,25 @@
 - Add colour schema DONE
 - Add titles DONE
 - add geolocation DONE
-- Sop things jumping around each drag - ~DONE
+- Sop things jumping around each drag DONE
 - Make dragging around high quality DONE
 - Make text render centrally rather than from the left DONE
 - Graticules DONE
 - Bathymetry DONE
 - Make it render quicker by not rendering the download map page until only when neccesary DONE
+- Make projection changeable DONE
 
-- Make projection changeable
-- Ensure text is sized reasonably at all map sizes
-- Add .png and .svg options to download button
-- Add radio boxes to enable (or disable) various map layers
 - Make the url configs more robust (type sanitation)
+- Add projection to url params
+- Add .png and .svg options to download button
+- Ensure text is sized reasonably at all map sizes
+- Add radio boxes to enable (or disable) various map layers
 - Question mark popup for the "about this project"
 - Hide toolbar
 - Refactor app.js functions into Util object
 - Refactor map components into a map folder
 
-#Ideas
-- Consider layers - people can select what goes onto the exported print ready svg file
-- Consider url parameters - if people share the url of the map they have made, could it render the exact same for the other person?
-
 #First release MVP goal:
-- Exportable SVG with printmarks
 - geolocation
 - Url encoded parameters
 - Two or three color themes?
