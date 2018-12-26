@@ -10,9 +10,10 @@
 - Bathymetry DONE
 - Make it render quicker by not rendering the download map page until only when neccesary DONE
 - Make projection changeable DONE
+- Add projection to url params DONE
+- Make the url configs more robust (type sanitation) DONE
 
-- Make the url configs more robust (type sanitation)
-- Add projection to url params
+- Make download aspect ratio match projeted map
 - Add .png and .svg options to download button
 - Ensure text is sized reasonably at all map sizes
 - Add radio boxes to enable (or disable) various map layers

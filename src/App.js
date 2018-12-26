@@ -33,6 +33,21 @@ const updateUrl = (lat, lon, projection, style) => {
   window.history.replaceState({}, '', `/${lat}/${lon}/${projection}/${style}`)
 }
 
+const extractUrlParams = (urlParams) => {
+  const setDefault = () => {
+    updateUrl(0, 0, projections.default.name, styles.default.name)
+    return [0, 0, projections.default.name, styles.default.name]
+  }
+
+  const [lat, lon, projectionName, styleName] = urlParams
+
+  if(typeof lat !== 'number'|| typeof lon !== 'number') return setDefault()
+  if(!projections.isValid(projectionName))              return setDefault()
+  if(!styles.isValid(styleName))                        return setDefault()
+
+  return [parseInt(lat, 10), parseInt(lon, 10), projectionName, styleName]
+}
+
 const request = (address, callback) => {
   const constructRequest = (a) => `https://eu1.locationiq.com/v1/search.php?key=${'10bb188a4dae33'}&q=${a}&format=json`
   console.log("Making request");
@@ -48,21 +63,19 @@ const request = (address, callback) => {
 class App extends Component {
   constructor() {
     super()
-    const pn = window.location.pathname.split('/')
-    const [lat, lon, projection, styleName] = (pn.length === 5 ? pn.slice(1) : [0, 0, projections[0].name, styles[0].name])
+    const pn = window.location.pathname.split('/').slice(1)
+    const [lat, lon, projectionName, styleName] = extractUrlParams(pn)
 
     this.state = {
       searchString: '',
-      searchLat: parseInt(lat, 10),
-      searchLon: parseInt(lon, 10),
-      projection:  projection,
+      searchLat: lat,
+      searchLon: lon,
+      projection:  projectionName,
       currentLat: 0,
       currentLon: 0,
-      style: styles.filter(s => s.name === styleName)[0],
+      style: styles.get(styleName),
       svgNode: null
     }
-
-
 
     this._inputHandler = this._inputHandler.bind(this)
     this._geolocate = this._geolocate.bind(this)
@@ -75,12 +88,12 @@ class App extends Component {
   }
 
   render() {
-    const styleIcons = styles.map((s, key) => {
+    const styleIcons = styles.list.map((s, key) => {
       const isSelected = s.name === this.state.style.name
       return <div key={key} onClick={() => this._changeStyle(s)} className='button'>{styleIcon(s.land, s.sea, 16, isSelected)}</div>
     })
 
-    const projectionList = projections.map((p, i) => {
+    const projectionList = projections.list.map((p, i) => {
       return <div key={i} onClick={() => this._changeProjection(p.name)}>{p.displayName}</div>
     })
 
@@ -113,6 +126,7 @@ class App extends Component {
   }
 
   _updateSvg(s) {
+    console.log('called');
     this.setState(Object.assign({}, this.state, {svgNode: s}))
   }
 

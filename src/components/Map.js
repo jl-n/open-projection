@@ -54,6 +54,12 @@ class Map extends Component {
     }
   }
 
+  componentDidMount() {
+    if(this.props.updateSvg) {
+      this.props.updateSvg(this.svgRef.current)
+    }
+  }
+
   render() {
     const w = this.props.width
     const h = this.props.height

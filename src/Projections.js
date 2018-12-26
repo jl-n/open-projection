@@ -11,4 +11,13 @@ const projections = Object.keys(d3projections).filter(compatibleProjections).map
   }
 })
 
-export default projections
+export default {
+  list: projections,
+  default: projections[0],
+  isValid: (name) => {
+    return projections.filter((p) => p.name === name).length > 0
+  },
+  get: (name) => {
+    return projections.filter(p => name === p.name)[0]
+  }
+}
