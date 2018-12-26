@@ -110,7 +110,11 @@ class App extends Component {
           <div className='projections'>
             {projectionList}
           </div>
-          <div className='download' onClick={this._download}>{icon('download', 16)}</div>
+
+          <div className='download'>
+              <div className='button' onClick={() => this._download('svg')}> Save SVG </div>
+              <div className='button' onClick={() => this._download('png')}> Save PNG </div>
+          </div>
         </div>
 
         <MapRenderer
@@ -156,10 +160,8 @@ class App extends Component {
   }
 
   _download(fileFormat) {
-    console.log('Downloading...');
     const node = this.state.svgNode
-
-    console.log(node);
+    console.log('Downloading...', node)
 
     if(!node) return
 
@@ -168,6 +170,14 @@ class App extends Component {
     if(fileFormat === 'svg') {
       const blob = new Blob([node.innerHTML], {type: 'image/svg+xml'});
       download(blob, "maps.svg", "image/svg+xml");
+
+      // domtoimage.toSvg(node)
+      //   .then(dataUrl => {
+      //       download(dataUrl, 'map.svg')
+      //   })
+      //   .catch(error => {
+      //       console.error('oops, something went wrong!', error);
+      //   });
       return
     }
 

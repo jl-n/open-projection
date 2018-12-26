@@ -13,8 +13,8 @@
 - Add projection to url params DONE
 - Make the url configs more robust (type sanitation) DONE
 
-- Make download aspect ratio match projeted map
 - Add .png and .svg options to download button
+- Make download aspect ratio match projected map
 - Ensure text is sized reasonably at all map sizes
 - Add radio boxes to enable (or disable) various map layers
 - Question mark popup for the "about this project"
