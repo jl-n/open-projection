@@ -24,6 +24,8 @@ class Map extends Component {
     this._getGraticules = this._getGraticules.bind(this)
     this._getBathymetry = this._getBathymetry.bind(this)
     this._getLabelData = this._getLabelData.bind(this)
+
+    this.svgRef = React.createRef()
   }
 
   componentWillMount() {
@@ -44,6 +46,12 @@ class Map extends Component {
        // .parallel(45)
        .center([0, 0]) // set centre to further North
        // .scale([w/(2*Math.PI)]) // scale to fit group width
+  }
+
+  componentDidUpdate(props) {
+    if(props.updateSvg) {
+      this.props.updateSvg(this.svgRef.current)
+    }
   }
 
   render() {
@@ -67,7 +75,7 @@ class Map extends Component {
 
     return (
       <div>
-        <div ref={svgRef ? svgRef : null}>
+        <div ref={this.svgRef}>
           <svg className="container noselect" width={this.props.width} height={this.props.height}>
             <rect width={this.props.width} height={this.props.height} fill={this.props.mapStyle.sea}></rect>
             <g className="countries">

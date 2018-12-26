@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
 import MapRenderer from './components/MapRenderer'
 import Map from './components/Map'
@@ -54,9 +53,10 @@ class App extends Component {
       currentLat: 0,
       currentLon: 0,
       style: styles.filter(s => s.name === styleName)[0],
+      svgNode: null
     }
 
-    this.downloadableMap = React.createRef();
+    // this.svgRef = React.createRef();
 
     this._inputHandler = this._inputHandler.bind(this)
     this._geolocate = this._geolocate.bind(this)
@@ -64,6 +64,7 @@ class App extends Component {
     this._handleKeyPress = this._handleKeyPress.bind(this)
     this._onLocationChange = this._onLocationChange.bind(this)
     this._changeStyle = this._changeStyle.bind(this)
+    this._updateSvg = this._updateSvg.bind(this)
   }
 
   render() {
@@ -82,21 +83,19 @@ class App extends Component {
           <div className='download' onClick={this._download}>{icon('download', 16)}</div>
         </div>
 
-        <MapRenderer mapStyle={this.state.style} lat={this.state.searchLat} lon={this.state.searchLon} onLocationChange={this._onLocationChange}/>
-
-        <div style={{display: 'none'}} className='mapDownload'>
-          <Map
-            mapStyle={this.state.style}
-            renderLevel={1}
-            lon={this.state.currentLon}
-            lat={this.state.currentLat}
-            width={4000}
-            height={2000}
-            svgRef={this.downloadableMap}
-          />
-        </div>
+        <MapRenderer
+          mapStyle={this.state.style}
+          lat={this.state.searchLat}
+          lon={this.state.searchLon}
+          onLocationChange={this._onLocationChange}
+          updateSvg={this._updateSvg}
+        />
       </div>
     );
+  }
+
+  _updateSvg(s) {
+    this.setState(Object.assign({}, this.state, {svgNode: s}))
   }
 
   _changeStyle(s) {
@@ -121,7 +120,9 @@ class App extends Component {
 
   _download(fileFormat) {
     console.log('Downloading...');
-    const node = this.downloadableMap.current
+    const node = this.state.svgNode
+
+    console.log(node);
 
     if(!node) return
 

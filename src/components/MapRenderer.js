@@ -64,6 +64,19 @@ class MapRenderer extends Component {
   render() {
     const renderLevel = this.state.isDragging || this.state.isAnimating ? 0 : 1
     const cursor = this.state.isDragging ? 'grabbing' : 'grab'
+    const downloadableMap = (
+      <div className='mapDownload'>
+        <Map
+          mapStyle={this.state.style}
+          renderLevel={1}
+          lon={this.state.currentLon}
+          lat={this.state.currentLat}
+          width={4000}
+          height={2000}
+          updateSvg={this.props.updateSvg}
+        />
+      </div>
+    )
 
     return (
       <div style={{cursor: cursor}}
@@ -78,6 +91,8 @@ class MapRenderer extends Component {
           width={document.body.clientWidth}
           height={document.body.clientHeight}
         />
+
+        {renderLevel === 1 ? downloadableMap : ''}
       </div>
     )
   }
@@ -109,8 +124,8 @@ class MapRenderer extends Component {
       const xDiff = e.pageX - this.state.lastCusorPos.x
       const yDiff = e.pageY - this.state.lastCusorPos.y
 
-      const lon = this.state.lon-yDiff
-      const lat = this.state.lat+xDiff
+      const lon = this.state.lon-xDiff
+      const lat = this.state.lat+yDiff
 
       this.props.onLocationChange(lat, lon, this.props.mapStyle.name)
 
