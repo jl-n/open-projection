@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import 'normalize.css'
 import MapRenderer from './components/MapRenderer'
+import ProjectionSelect from './components/ProjectionSelect'
 import styles from './Styles'
 import download from 'downloadjs'
 import domtoimage from 'dom-to-image';
@@ -40,9 +42,13 @@ class App extends Component {
       return <div key={key} onClick={() => this._changeStyle(s)} className='button'>{utils.styleIcon(s.land, s.sea, 16, isSelected)}</div>
     })
 
-    const projectionList = projections.list.map((p, i) => {
-      return <div key={i} onClick={() => this._changeProjection(p.name)}>{p.displayName}</div>
+    const projectionOptions = projections.list.map((p, i) => {
+      return {value: p.name, label: p.displayName}
     })
+
+    const handleProjectionChange = (selectedOption) => {
+      this._changeProjection(selectedOption.value)
+    }
 
     return (
       <div className="App">
@@ -55,7 +61,10 @@ class App extends Component {
             {styleIcons}
           </div>
           <div className='projections'>
-            {projectionList}
+            <ProjectionSelect
+              value={projectionOptions.filter(op => op.value === this.state.projection)}
+              onChange={handleProjectionChange}
+            />
           </div>
 
           <div className='download'>

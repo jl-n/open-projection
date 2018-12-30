@@ -75,11 +75,9 @@ class MapRenderer extends Component {
           width={4000}
           height={2000}
           updateSvg={this.props.updateSvg}
-
         />
       </div>
     )
-
 
     return (
       <div style={{cursor: cursor}}

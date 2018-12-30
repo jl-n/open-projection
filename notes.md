@@ -18,14 +18,17 @@
 
 - Make download aspect ratio match projected map
 - Ensure text is sized reasonably at all map sizes
-- Add radio boxes to enable (or disable) various map layers
 - Question mark popup for the "about this project"
+
+#Maybe for the future:
+- Add radio boxes to enable (or disable) various map layers
 - Hide toolbar
+- Would be cute (and part of another quick project) to make a small globe avatar react npm package
 
 #First release MVP goal:
-- geolocation
-- Url encoded parameters
-- Two or three color themes?
+- geolocation DONE
+- Url encoded parameters DONE
+- Two or three color themes? DONE
 
 # Further notes:
 What makes the Mapbox (and other maps) look nice is the land has shaded contours of elevation, and the land has shaded areas of green to pale to indicate climate

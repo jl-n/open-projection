@@ -10,7 +10,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-size: 0.85rem;
-  /* position: fixed; */
+  line-height: normal;
 }
 
 #map-holder {
@@ -72,8 +72,7 @@ input {
   cursor: pointer;
   position: relative;
   display: inline-block;
-  /* border-right: solid rgba(0,0,0, 0.05) 1px; */
-  padding: 0.3rem 0.6rem;
+  padding: 0.3rem 0.4rem;
 }
 
 .button {
@@ -115,7 +114,6 @@ input {
 }
 
 .styleIcon {
-  margin-top: 4px;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -123,25 +121,25 @@ input {
 .map-styles {
   align-items: center;
   display: flex;
+  padding: 0.3rem 0.2rem;
 }
 
 .projections {
-  position: relative;
-  max-height: 10rem;
-  overflow: scroll;
-  padding: 1rem;
+  /* padding: 0.3rem; */
 }
 
+
+/*
 .projections div {
   cursor: pointer;
   position: relative;
   display: flex;
   transition: ease-in all 0.03s;
-}
+} */
 
-.projections div:hover {
+/* .projections div:hover {
   transform: scale(1.03);
-}
+} */
 
 * {
   box-sizing: border-box;

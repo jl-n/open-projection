@@ -70,7 +70,6 @@ class Map extends Component {
     this.projection = d3projections[projection]().center([0, 0])
 
     this.projection
-       .scale([w/(2*Math.PI)*1.4]) // scale to fit group width
        .translate([w/2,h/2]) // ensure centred in group
        .rotate([-lon,-lat, 0])
 
