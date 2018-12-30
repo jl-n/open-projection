@@ -19,7 +19,9 @@
 - Ensure text is sized reasonably at all map sizes DONE
 - Checkbox for graticules DONE
 - Checkbox for labels DONE
+- Remove projections that crash the UI! DONE
 
+- Consider putting state of graticules and labels in URL?
 - Refactor everything into styled components or 'emotion'
 - Question mark popup for the "about this project"
 
