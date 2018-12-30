@@ -14,8 +14,8 @@
 - Make the url configs more robust (type sanitation) DONE
 - Add .png and .svg options to download button DONE
 - Refactor app.js functions into Util object DONE
+- Refactor map components into a map folder DONE
 
-- Refactor map components into a map folder
 - Make download aspect ratio match projected map
 - Ensure text is sized reasonably at all map sizes
 - Add radio boxes to enable (or disable) various map layers

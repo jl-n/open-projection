@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import * as d3projections from 'd3-geo-projection';
 
-import Country from './Country'
-import Label from './Label'
-import Graticule from './Graticule'
-import Bathymetry from './Bathymetry'
+import Country from './map/Country'
+import Label from './map/Label'
+import Graticule from './map/Graticule'
+import Bathymetry from './map/Bathymetry'
 
 import MAPDATA_LOW from '../map-data/110m';
 import MAPDATA_HIGH from '../map-data/50m';

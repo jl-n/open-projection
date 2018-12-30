@@ -91,9 +91,7 @@ class App extends Component {
   }
 
   _handleKeyPress(e) {
-    if(e.key === 'Enter'){
-      this._geolocate()
-    }
+    if(e.key === 'Enter') this._geolocate()
   }
 
   _onLocationChange(lat, lon) {
