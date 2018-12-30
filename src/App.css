@@ -93,7 +93,10 @@ input {
   border-radius: 0 0 4px 4px;
   color: green;
   cursor: pointer;
+}
 
+.layers {
+  
 }
 
 .download div {
@@ -121,6 +124,8 @@ input {
   align-items: center;
   display: flex;
   padding: 0.3rem 0.2rem;
+  border-top: solid rgba(0,0,0, 0.05) 1px;
+
 }
 
 * {

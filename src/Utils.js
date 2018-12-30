@@ -4,8 +4,8 @@ import ky from 'ky';
 import styles from './Styles'
 import projections from './Projections'
 
-const icon = (name, size) => {
-  const iconSvg = feather.icons[name].toSvg({ width: size, class: 'icon' })
+const icon = (name, size, color='grey') => {
+  const iconSvg = feather.icons[name].toSvg({ width: size, class: 'icon', stroke: color })
   return <span dangerouslySetInnerHTML={{__html: iconSvg}}></span>
 }
 

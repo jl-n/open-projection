@@ -50,6 +50,9 @@ class App extends Component {
     const showLabels = () => this.setState(Object.assign({}, this.state, {showLabels: !this.state.showLabels}))
     const showGraticules = () => this.setState(Object.assign({}, this.state, {showGraticules: !this.state.showGraticules}))
 
+    const graticuleColor = this.state.showGraticules ? 'green' : 'grey'
+    const labelColor = this.state.showLabels ? 'green' : 'grey'
+
     return (
       <div className="App">
         <div className="toolbar">
@@ -58,8 +61,8 @@ class App extends Component {
             <div className='button' onClick={this._geolocate}>{utils.icon('search', 16)}</div>
           </div>
           <div className='layers'>
-            <div onClick={showLabels} className='button'>{utils.icon('type', 16)}</div>
-            <div onClick={showGraticules} className='button'>{utils.icon('target', 16)}</div>
+            <div onClick={showLabels} className='button'>{utils.icon('type', 14, labelColor)}</div>
+            <div onClick={showGraticules} className='button'>{utils.icon('target', 14, graticuleColor)}</div>
           </div>
           <div className='map-styles'>
             {styleIcons}
