@@ -40,12 +40,7 @@ class Map extends Component {
     }
 
     this.labelData = getLabelData(MAPDATA_HIGH)
-
     this.projection = d3projections.geoCylindricalEqualArea()
-       // .rotate([-120, -14, 0]) //long, lat, 0
-       // .parallel(45)
-       .center([0, 0]) // set centre to further North
-       // .scale([w/(2*Math.PI)]) // scale to fit group width
   }
 
   componentDidUpdate(props) {
@@ -66,15 +61,9 @@ class Map extends Component {
     const lon = this.props.lon
     const lat = this.props.lat
     const projection = 'geo'+this.props.projection
-
-    // this.projection = d3projections[projection]().center([0, 0])
-
-    // this.projection
-    //    .scale([w/(2*Math.PI)*0.5]) // scale to fit group width
-    //    .translate([w/2,h/2]) // ensure centred in group
-    //    .rotate([-lon,-lat, 0])
-    //    // .fitSize([w, h], geojson)
-    //    .fitExtent([[20, 20],[w, h]], mapData)
+    const renderLevel = this.props.renderLevel
+    const showLabels = this.props.showLabels
+    const showGraticules = this.props.showGraticules
 
     this.projection = d3projections[projection]()
      .center([0, 0])
@@ -82,11 +71,13 @@ class Map extends Component {
      .rotate([-lon,-lat, 0])
      .fitExtent([[30, 30],[w-30, h-30]], MAPDATA_LOW)
 
-    const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
+    const mapData = renderLevel === 1 ? MAPDATA_HIGH : MAPDATA_LOW
     const statePaths = this._getStatePaths(mapData)
-    const graticules = this.props.renderLevel === 0 ? [] : this._getGraticules(GRATICULES)
+
+    const graticules = (renderLevel === 1) && showGraticules ? this._getGraticules(GRATICULES) : []
+    const labels = (renderLevel === 1) && showLabels ? this._getLabelData() : []
+
     const bathymetry = this.props.renderLevel === 0 ? [] : []//this._getBathymetry([BATHYMETRY_3])
-    const labels = this.props.renderLevel === 0 ? [] : this._getLabelData()
 
     return (
       <div>

@@ -23,6 +23,8 @@ class App extends Component {
       currentLat: 0,
       currentLon: 0,
       style: styles.get(styleName),
+      showLabels: true,
+      showGraticules: true,
       svgNode: null
     }
 
@@ -42,13 +44,11 @@ class App extends Component {
       return <div key={key} onClick={() => this._changeStyle(s)} className='button'>{utils.styleIcon(s.land, s.sea, 16, isSelected)}</div>
     })
 
-    const projectionOptions = projections.list.map((p, i) => {
-      return {value: p.name, label: p.displayName}
-    })
+    const projectionOptions = projections.list.map((p, i) => ({value: p.name, label: p.displayName}))
+    const handleProjectionChange = (selectedOption) => this._changeProjection(selectedOption.value)
 
-    const handleProjectionChange = (selectedOption) => {
-      this._changeProjection(selectedOption.value)
-    }
+    const showLabels = () => this.setState(Object.assign({}, this.state, {showLabels: !this.state.showLabels}))
+    const showGraticules = () => this.setState(Object.assign({}, this.state, {showGraticules: !this.state.showGraticules}))
 
     return (
       <div className="App">
@@ -56,6 +56,10 @@ class App extends Component {
           <div className='input'>
             <input autoFocus placeholder='Type any location...' onKeyPress={this._handleKeyPress} onChange={this._inputHandler} />
             <div className='button' onClick={this._geolocate}>{utils.icon('search', 16)}</div>
+          </div>
+          <div className='layers'>
+            <div onClick={showLabels} className='button'>{utils.icon('type', 16)}</div>
+            <div onClick={showGraticules} className='button'>{utils.icon('target', 16)}</div>
           </div>
           <div className='map-styles'>
             {styleIcons}
@@ -78,6 +82,8 @@ class App extends Component {
           projection={this.state.projection}
           lat={this.state.searchLat}
           lon={this.state.searchLon}
+          showLabels={this.state.showLabels}
+          showGraticules={this.state.showGraticules}
           onLocationChange={this._onLocationChange}
           updateSvg={this._updateSvg}
         />
@@ -116,7 +122,7 @@ class App extends Component {
     const node = this.state.svgNode
     console.log('Downloading...', node)
 
-    if(!node) return
+    if(!node) return console.log('Svg node invalid...', node)
 
     if(fileFormat === 'svg') {
       const blob = new Blob([node.innerHTML], {type: 'image/svg+xml'});

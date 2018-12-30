@@ -105,7 +105,6 @@ input {
   transform: scale(1.1);
 }
 
-
 .mapDownload {
   pointer-events: none;
   position: fixed;
@@ -123,23 +122,6 @@ input {
   display: flex;
   padding: 0.3rem 0.2rem;
 }
-
-.projections {
-  /* padding: 0.3rem; */
-}
-
-
-/*
-.projections div {
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  transition: ease-in all 0.03s;
-} */
-
-/* .projections div:hover {
-  transform: scale(1.03);
-} */
 
 * {
   box-sizing: border-box;

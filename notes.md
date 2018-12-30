@@ -17,9 +17,10 @@
 - Refactor map components into a map folder DONE
 - Make download aspect ratio match projected map DONE
 - Ensure text is sized reasonably at all map sizes DONE
+- Checkbox for graticules DONE
+- Checkbox for labels DONE
 
-- Checkbox for graticules
-- Checkbox for labels
+- Refactor everything into styled components or 'emotion'
 - Question mark popup for the "about this project"
 
 #Maybe for the future:

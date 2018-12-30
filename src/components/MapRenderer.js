@@ -76,6 +76,9 @@ class MapRenderer extends Component {
           width={841*Math.sqrt(ppi)}
           height={594*Math.sqrt(ppi)}
           updateSvg={this.props.updateSvg}
+
+          showLabels={this.props.showLabels}
+          showGraticules={this.props.showGraticules}
         />
       </div>
     )
@@ -94,6 +97,9 @@ class MapRenderer extends Component {
           lon={this.state.lon}
           width={document.body.clientWidth}
           height={document.body.clientHeight}
+          
+          showLabels={this.props.showLabels}
+          showGraticules={this.props.showGraticules}
         />
 
         {renderLevel === 1 ? downloadableMap : ''}
