@@ -77,7 +77,6 @@ class App extends Component {
   }
 
   _updateSvg(s) {
-    console.log('called');
     this.setState(Object.assign({}, this.state, {svgNode: s}))
   }
 

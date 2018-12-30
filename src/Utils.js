@@ -37,9 +37,9 @@ const extractUrlParams = (urlParams) => {
 
   const [lat, lon, projectionName, styleName] = urlParams
 
-  if(typeof lat !== 'number'|| typeof lon !== 'number') return setDefault()
-  if(!projections.isValid(projectionName))              return setDefault()
-  if(!styles.isValid(styleName))                        return setDefault()
+  if(isNaN(lat) || isNaN(lon))              return setDefault()
+  if(!projections.isValid(projectionName))  return setDefault()
+  if(!styles.isValid(styleName))            return setDefault()
 
   return [parseInt(lat, 10), parseInt(lon, 10), projectionName, styleName]
 }
