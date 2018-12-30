@@ -15,9 +15,11 @@
 - Add .png and .svg options to download button DONE
 - Refactor app.js functions into Util object DONE
 - Refactor map components into a map folder DONE
+- Make download aspect ratio match projected map DONE
+- Ensure text is sized reasonably at all map sizes DONE
 
-- Make download aspect ratio match projected map
-- Ensure text is sized reasonably at all map sizes
+- Checkbox for graticules
+- Checkbox for labels
 - Question mark popup for the "about this project"
 
 #Maybe for the future:

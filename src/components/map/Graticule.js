@@ -6,7 +6,7 @@ const Graticule = (props) => {
 
   return (
     <g>
-      <path className='graticule' d={path(props.feature)} fill="none" stroke="#FEAB6C" strokeWidth={1} />
+      <path className='graticule' d={path(props.feature)} fill="none" stroke="#FEAB6C" strokeWidth={props.strokeWidth} />
     </g>
   )
 }

@@ -9,8 +9,8 @@ import Bathymetry from './map/Bathymetry'
 
 import MAPDATA_LOW from '../map-data/110m';
 import MAPDATA_HIGH from '../map-data/50m';
-// import GRATICULES from '../map-data/graticules_10';
-//
+import GRATICULES from '../map-data/graticules_10';
+
 // import BATHYMETRY_0 from '../map-data/bathymetry_J_1000';
 // import BATHYMETRY_1 from '../map-data/bathymetry_H_3000';
 // import BATHYMETRY_2 from '../map-data/bathymetry_G_4000';
@@ -67,15 +67,24 @@ class Map extends Component {
     const lat = this.props.lat
     const projection = 'geo'+this.props.projection
 
-    this.projection = d3projections[projection]().center([0, 0])
+    // this.projection = d3projections[projection]().center([0, 0])
 
-    this.projection
-       .translate([w/2,h/2]) // ensure centred in group
-       .rotate([-lon,-lat, 0])
+    // this.projection
+    //    .scale([w/(2*Math.PI)*0.5]) // scale to fit group width
+    //    .translate([w/2,h/2]) // ensure centred in group
+    //    .rotate([-lon,-lat, 0])
+    //    // .fitSize([w, h], geojson)
+    //    .fitExtent([[20, 20],[w, h]], mapData)
+
+    this.projection = d3projections[projection]()
+     .center([0, 0])
+     .translate([w/2,h/2])
+     .rotate([-lon,-lat, 0])
+     .fitExtent([[30, 30],[w-30, h-30]], MAPDATA_LOW)
 
     const mapData = this.props.renderLevel === 0 ? MAPDATA_LOW : MAPDATA_HIGH
     const statePaths = this._getStatePaths(mapData)
-    const graticules = this.props.renderLevel === 0 ? [] : []//this._getGraticules(GRATICULES)
+    const graticules = this.props.renderLevel === 0 ? [] : this._getGraticules(GRATICULES)
     const bathymetry = this.props.renderLevel === 0 ? [] : []//this._getBathymetry([BATHYMETRY_3])
     const labels = this.props.renderLevel === 0 ? [] : this._getLabelData()
 
@@ -104,13 +113,13 @@ class Map extends Component {
 
   _getStatePaths(data) {
     return data.features.map((feature, i) => {
-      return <Country stroke={this.props.mapStyle.borders} fill={this.props.mapStyle.land} projection={this.projection} feature={feature} key={i} />;
+      return <Country stroke={this.props.mapStyle.borders} strokeWidth={this.props.width/3000} fill={this.props.mapStyle.land} projection={this.projection} feature={feature} key={i} />;
     })
   }
 
   _getGraticules(data) {
     return data.features.map((feature, i) => {
-      return <Graticule projection={this.projection} feature={feature} key={i} />;
+      return <Graticule stroke={this.props.mapStyle.graticules} strokeWidth={this.props.width/2000} projection={this.projection} feature={feature} key={i} />;
     })
   }
 
@@ -127,7 +136,7 @@ class Map extends Component {
     // This would mean no edge cases like america label offset because of Hawaii skewing centroid
     return this.labelData.map((c, i) => {
       const projectedCoord = this.projection([c.coordinates[0], c.coordinates[1]])
-      return <Label x={projectedCoord[0]} y={projectedCoord[1]} properties={c.properties} size={c.size} key={i}/>
+      return <Label x={projectedCoord[0]} y={projectedCoord[1]} properties={c.properties} color={this.props.mapStyle.labels} size={this.props.width/230} key={i}/>
     })
   }
 }

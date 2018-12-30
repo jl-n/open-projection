@@ -5,20 +5,23 @@ const styles = [
     sea: '#C4D4E0',
     labels: 'black',
     borders: '#B90700',
+    graticules: '#B90700',
   },
   {
     name: 'brownie',
     land: 'brown',
     sea: 'blue',
     labels: 'white',
-    borders: 'orange'
+    borders: 'orange',
+    graticules: 'orange'
   },
   {
     name: 'orangeface',
     land: 'orange',
     sea: 'red',
     labels: 'white',
-    borders: 'brown'
+    borders: 'brown',
+    graticules: 'brown'
   },
 ]
 

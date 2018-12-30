@@ -64,6 +64,7 @@ class MapRenderer extends Component {
   render() {
     const renderLevel = this.state.isDragging || this.state.isAnimating ? 0 : 1
     const cursor = this.state.isDragging ? 'grabbing' : 'grab'
+    const ppi = 100
     const downloadableMap = (
       <div className='mapDownload'>
         <Map
@@ -72,8 +73,8 @@ class MapRenderer extends Component {
           projection={this.props.projection}
           lat={this.state.lat}
           lon={this.state.lon}
-          width={4000}
-          height={2000}
+          width={841*Math.sqrt(ppi)}
+          height={594*Math.sqrt(ppi)}
           updateSvg={this.props.updateSvg}
         />
       </div>
