@@ -9,7 +9,7 @@ const icon = (name, size, color='grey') => {
   return <span dangerouslySetInnerHTML={{__html: iconSvg}}></span>
 }
 
-const styleIcon = (colorA, colorB, size, isSelected) => {
+const styleIcon = (topColor, bottomColor, size, isSelected) => {
   const style = {
     width: size,
     height: size,
@@ -18,8 +18,8 @@ const styleIcon = (colorA, colorB, size, isSelected) => {
   return (
     <div className='styleIcon' style={style}>
       <svg width={size} height={size}>
-        <rect fill={colorA} x='0' y='0' width={size} height={size} />
-        <polygon fill={colorB} points={`0,0 0,${size} ${size},0`} />
+        <rect fill={bottomColor} x='0' y='0' width={size} height={size} />
+        <polygon fill={topColor} points={`0,0 0,${size} ${size},0`} />
       </svg>
     </div>
   )

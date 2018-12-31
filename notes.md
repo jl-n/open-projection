@@ -21,14 +21,17 @@
 - Checkbox for labels DONE
 - Remove projections that crash the UI! DONE
 
-- Consider putting state of graticules and labels in URL?
+- Make sure text in svg export is correctly sized
 - Refactor everything into styled components or 'emotion'
 - Question mark popup for the "about this project"
+- Make sure the current rotation is never more then what a lat/lon could be to avoid mad spinning
 
 #Maybe for the future:
-- Add radio boxes to enable (or disable) various map layers
+- link each projection to its wikipedia page?
+- Make input show autocomplete options?
+- Consider putting state of graticules and labels in URL?
 - Hide toolbar
-- Would be cute (and part of another quick project) to make a small globe avatar react npm package
+- Would be cute (and part of another quick project) to make a small globe avatar react npm package to show where the center is
 
 #First release MVP goal:
 - geolocation DONE

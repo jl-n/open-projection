@@ -41,14 +41,14 @@ class App extends Component {
   render() {
     const styleIcons = styles.list.map((s, key) => {
       const isSelected = s.name === this.state.style.name
-      return <div key={key} onClick={() => this._changeStyle(s)} className='button'>{utils.styleIcon(s.land, s.sea, 16, isSelected)}</div>
+      return <div key={key} onClick={() => this._changeStyle(s)} className='button'>{utils.styleIcon(s.icon.top, s.icon.bottom, 16, isSelected)}</div>
     })
 
     const projectionOptions = projections.list.map((p, i) => ({value: p.name, label: p.displayName}))
     const handleProjectionChange = (selectedOption) => this._changeProjection(selectedOption.value)
 
-    const showLabels = () => this.setState(Object.assign({}, this.state, {showLabels: !this.state.showLabels}))
-    const showGraticules = () => this.setState(Object.assign({}, this.state, {showGraticules: !this.state.showGraticules}))
+    const toggleLabels = () => this.setState(Object.assign({}, this.state, {showLabels: !this.state.showLabels}))
+    const toggleGraticules = () => this.setState(Object.assign({}, this.state, {showGraticules: !this.state.showGraticules}))
 
     const graticuleColor = this.state.showGraticules ? 'green' : 'grey'
     const labelColor = this.state.showLabels ? 'green' : 'grey'
@@ -57,12 +57,12 @@ class App extends Component {
       <div className="App">
         <div className="toolbar">
           <div className='input'>
-            <input autoFocus placeholder='Type any location...' onKeyPress={this._handleKeyPress} onChange={this._inputHandler} />
+            <input autoFocus placeholder='Type any location to orient...' onKeyPress={this._handleKeyPress} onChange={this._inputHandler} />
             <div className='button' onClick={this._geolocate}>{utils.icon('search', 16)}</div>
           </div>
           <div className='layers'>
-            <div onClick={showLabels} className='button'>{utils.icon('type', 14, labelColor)}</div>
-            <div onClick={showGraticules} className='button'>{utils.icon('target', 14, graticuleColor)}</div>
+            <div onClick={toggleLabels} className='button'>{utils.icon('type', 14, labelColor)}</div>
+            <div onClick={toggleGraticules} className='button'>{utils.icon('target', 14, graticuleColor)}</div>
           </div>
           <div className='map-styles'>
             {styleIcons}

@@ -6,6 +6,22 @@ const styles = [
     labels: 'black',
     borders: '#B90700',
     graticules: '#B90700',
+    icon: {
+      top: '#E6E8E9',
+      bottom: '#C4D4E0',
+    }
+  },
+  {
+    name: 'contrast',
+    land: 'white',
+    sea: 'white',
+    labels: 'black',
+    borders: 'black',
+    graticules: 'black',
+    icon: {
+      top: 'white',
+      bottom: 'black',
+    }
   },
   {
     name: 'brownie',
@@ -13,7 +29,11 @@ const styles = [
     sea: 'blue',
     labels: 'white',
     borders: 'orange',
-    graticules: 'orange'
+    graticules: 'orange',
+    icon: {
+      top: 'brown',
+      bottom: 'blue',
+    }
   },
   {
     name: 'orangeface',
@@ -21,7 +41,11 @@ const styles = [
     sea: 'red',
     labels: 'white',
     borders: 'brown',
-    graticules: 'brown'
+    graticules: 'brown',
+    icon: {
+      top: 'orange',
+      bottom: 'red',
+    }
   },
 ]
 
