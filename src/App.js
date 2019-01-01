@@ -3,11 +3,36 @@ import './App.css';
 import 'normalize.css'
 import MapRenderer from './components/MapRenderer'
 import ProjectionSelect from './components/ProjectionSelect'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import styles from './Styles'
 import download from 'downloadjs'
 import domtoimage from 'dom-to-image';
 import projections from './Projections'
 import utils from './Utils'
+
+const SwalWithReact = withReactContent(Swal)
+const message = (
+  <div>
+    Information about the project will be put here once written.
+    Assumenda sit et iusto aperiam praesentium. Repellendus autem minima quia. Molestiae animi qui sunt nisi magnam voluptatem.
+    Consequatur eos consequatur et. Illo praesentium quis maiores nobis sit quia ab in. Sed quo et facilis esse et ut architecto. Pariatur perferendis deleniti ab non molestias ad enim rem. Consequatur autem repellendus ipsam maiores. Hic aliquid eaque voluptates explicabo molestiae fugit dolor.
+    Rerum voluptatum quis ratione. Aut autem non accusantium. Error eius deserunt corrupti voluptatibus quas cum magnam illum. Eius earum reprehenderit nisi. Et harum quae ipsam. Autem saepe exercitationem exercitationem aut quos est.
+    Exercitationem inventore quae enim hic sed. Corrupti provident est modi ipsa nihil et odit. Debitis illum expedita omnis voluptatum qui ipsum non sint. Necessitatibus quidem molestiae perspiciatis magni qui. Voluptates eius harum adipisci repudiandae laboriosam nisi deserunt qui.
+  </div>
+)
+
+const showInfo = () => SwalWithReact.fire({
+  title: <p>Hello World</p>,
+  showConfirmButton: false,
+  html: message,
+  footer: 'Copyright 2018',
+  onOpen: () => {
+    // `MySwal` is a subclass of `Swal`
+    //   with all the same instance & static methods
+    // SwalWithReact.clickConfirm()
+  }
+})
 
 class App extends Component {
   constructor() {
@@ -54,8 +79,9 @@ class App extends Component {
     const labelColor = this.state.showLabels ? 'green' : 'grey'
 
     return (
-      <div className="App">
-        <div className="toolbar">
+      <div className='App'>
+        <div className='info' onClick={showInfo}>{utils.icon('help-circle', 24, this.state.style.icon.top, this.state.style.icon.bottom)}</div>
+        <div className='toolbar'>
           <div className='input'>
             <input autoFocus placeholder='Type any location to orient...' onKeyPress={this._handleKeyPress} onChange={this._inputHandler} />
             <div className='button' onClick={this._geolocate}>{utils.icon('search', 16)}</div>
@@ -129,8 +155,7 @@ class App extends Component {
 
     if(fileFormat === 'svg') {
       const blob = new Blob([node.innerHTML], {type: 'image/svg+xml'});
-      download(blob, "maps.svg", "image/svg+xml");
-      return
+      return download(blob, 'maps.svg', 'image/svg+xml');
     }
 
     domtoimage.toPng(node)

@@ -21,6 +21,9 @@
 - Checkbox for labels DONE
 - Remove projections that crash the UI! DONE
 
+- Remove this file, build directory and netlify folder out of vcs
+- Make downloaded map name better
+- Logo!
 - Make sure text in svg export is correctly sized
 - Refactor everything into styled components or 'emotion'
 - Question mark popup for the "about this project"

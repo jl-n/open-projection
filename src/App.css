@@ -96,7 +96,7 @@ input {
 }
 
 .layers {
-  
+
 }
 
 .download div {
@@ -125,8 +125,16 @@ input {
   display: flex;
   padding: 0.3rem 0.2rem;
   border-top: solid rgba(0,0,0, 0.05) 1px;
-
 }
+
+.info {
+  position: fixed;
+  right: 0;
+  top: 0;
+  padding: 1rem;
+  cursor: pointer;
+}
+
 
 * {
   box-sizing: border-box;

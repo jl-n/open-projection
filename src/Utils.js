@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import feather from 'feather-icons'
 import ky from 'ky';
 import styles from './Styles'
 import projections from './Projections'
 
-const icon = (name, size, color='grey') => {
-  const iconSvg = feather.icons[name].toSvg({ width: size, class: 'icon', stroke: color })
+const icon = (name, size, color='grey', fill='none') => {
+  const iconSvg = feather.icons[name].toSvg({ width: size, fill, stroke: color })
   return <span dangerouslySetInnerHTML={{__html: iconSvg}}></span>
 }
 
@@ -57,9 +57,9 @@ const request = (address, callback) => {
 }
 
 export default {
-  icon: icon,
-  styleIcon: styleIcon,
-  updateUrl: updateUrl,
-  extractUrlParams: extractUrlParams,
-  request: request
+  icon,
+  styleIcon,
+  updateUrl,
+  extractUrlParams,
+  request,
 }
