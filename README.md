@@ -1,6 +1,8 @@
 # Open Projection 🌏
 
-**Interactively apply map projections to any location in the world. [Try it here.](https://openprojections.org/)**
+**Completed in 2017.**
+
+Interactively apply map projections to any location in the world. [Try it here.](https://openprojections.org/)
 
 Maps display the world in two dimensions by making a series of spatial trade-offs, typically according to a set of default conventions. Some countries appear prominently whilst others are completely distorted. Generally a map projection is a choice between accurate area representation and strange map outline, or simple map outline but distorted feature representation. Because maps are generally displayed with North upwards and centered on Longitude, Latitude 0, the effect of the chosen map projection is often not recognised.
 
